@@ -2,28 +2,20 @@ package com.cityconcert.service.impl;
 
 import com.cityconcert.domain.Authority;
 import com.cityconcert.domain.User;
+import com.cityconcert.domain.dto.UserDTO;
+import com.cityconcert.mapper.UserMapper;
 import com.cityconcert.repository.AuthorityRepository;
 import com.cityconcert.repository.UserRepository;
 import com.cityconcert.security.SecurityUtils;
-import com.cityconcert.service.InvalidPasswordException;
 import com.cityconcert.service.UserService;
-import com.cityconcert.domain.dto.AdminUserDTO;
-import com.cityconcert.domain.dto.UserDTO;
-import com.cityconcert.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -288,17 +280,19 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public List<UserDTO> findAll() {
         log.debug("Request to get all Users");
-        return userMapper.usersToUserDTOs(userRepository.findAll());
+        return userRepository.findAll().stream().map(userMapper::toDto).collect(Collectors.toList());
     }
 
 
     @Transactional(readOnly = true)
     public Optional<UserDTO> findOne(Long id) {
         log.debug("Request to get User : {}", id);
-        return Optional.ofNullable(userMapper.userToUserDTO(userRepository.findById(id).get()));
+        return Optional.ofNullable(userMapper.toDto(userRepository.findById(id).get()));
     }
 
     public UserDTO save(UserDTO user) {
-        return null;
+        User u = userMapper.toEntity(user);
+         userRepository.save(u);
+        return userMapper.toDto(u);
     }
 }

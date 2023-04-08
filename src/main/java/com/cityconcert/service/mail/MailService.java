@@ -1,4 +1,4 @@
-package com.cityconcert.service;
+package com.cityconcert.service.mail;
 
 import com.cityconcert.domain.User;
 import java.nio.charset.StandardCharsets;
