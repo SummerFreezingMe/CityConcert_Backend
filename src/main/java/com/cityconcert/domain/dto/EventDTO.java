@@ -2,9 +2,7 @@ package com.cityconcert.domain.dto;
 
 import com.cityconcert.domain.enumeration.EventStatus;
 
-import javax.persistence.Column;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 

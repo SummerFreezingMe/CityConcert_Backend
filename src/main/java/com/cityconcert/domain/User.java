@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.BatchSize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -19,8 +20,10 @@ import java.util.Set;
  * A user.
  */
 @Entity
-@Table(name = "user")
-public class User extends AbstractAuditingEntity<Long> implements Serializable {
+@Table(name="\"user\"")
+public class User
+       // extends AbstractAuditingEntity<Long>
+        implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,7 +40,7 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     @JsonIgnore
     @NotNull
-    @Size(min = 60, max = 60)
+    //@Size(min = 60, max = 60)
     @Column(name = "password_hash", length = 60, nullable = false)
     private String password;
 
@@ -47,11 +50,13 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Column(name = "email",length = 254, unique = true)
     private String email;
 
-    @NotNull
-    @Column(nullable = false)
+    @Transient
     private boolean activated = false;
 
+    @Transient
+    private String passwordConfirm;
 
+    private SimpleGrantedAuthority role;
 
     @Size(max = 256)
     @Column(name = "image_url", length = 256)
@@ -136,5 +141,21 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
             ", imageUrl='" + imageUrl + '\'' +
             ", activated='" + activated + '\'' +
             "}";
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
+    public SimpleGrantedAuthority getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = new SimpleGrantedAuthority("ROLE_"+role);
     }
 }
