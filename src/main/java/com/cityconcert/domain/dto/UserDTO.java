@@ -27,7 +27,8 @@ private Long id;
 
     private String passwordConfirm;
 
-
+    private String role;
+    private String imageUrl;
     // prettier-ignore
     @Override
     public String toString() {
@@ -36,4 +37,6 @@ private Long id;
                 ", password='" + password + '\'' +
             "}";
     }
+
+
 }

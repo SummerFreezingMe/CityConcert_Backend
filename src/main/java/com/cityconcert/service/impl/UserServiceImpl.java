@@ -1,6 +1,6 @@
 package com.cityconcert.service.impl;
 
-import com.cityconcert.domain.Authority;
+import com.cityconcert.domain.Role;
 import com.cityconcert.domain.User;
 import com.cityconcert.domain.dto.UserDTO;
 import com.cityconcert.mapper.UserMapper;
@@ -10,33 +10,35 @@ import com.cityconcert.security.SecurityUtils;
 import com.cityconcert.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
-
+private String currentPassword;
     private final UserRepository userRepository;
-
-    private final PasswordEncoder passwordEncoder;
 
     private final UserMapper userMapper;
 
     private final AuthorityRepository authorityRepository;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper, AuthorityRepository authorityRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.authorityRepository = authorityRepository;
+        this.passwordEncoder = passwordEncoder;
     }
+
     /*
         public Optional<User> activateRegistration(String key) {
             log.debug("Activating user for activation key {}", key);
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
                             user.setPassword(passwordEncoder.encode(newPassword));
                             user.setResetKey(null);
                             user.setResetDate(null);
-                            retuuser;
+                            return user;
                         });
             }
 
@@ -155,8 +157,9 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Update all information for a specific user, and return the modified user.
-     *
+     * <p>
      * //@param userDTO user to update.
+     *
      * @return updated user.
      */
    /* public Optional<AdminUserDTO> updateUser(AdminUserDTO userDTO) {
@@ -189,7 +192,7 @@ public class UserServiceImpl implements UserService {
 */
     public void deleteUser(String login) {
         userRepository
-                .findOneByUsername(login)
+                .findByUsername(login)
                 .ifPresent(user -> {
                     userRepository.delete(user);
                     log.debug("Deleted User: {}", user);
@@ -199,21 +202,24 @@ public class UserServiceImpl implements UserService {
     /**
      * Update basic information (first name, last name, email, language) for the current user.
      *
-     * @param email     email id of user.
-     * @param imageUrl  image URL of user.
+     * @param userDTO   data to update the current user.
      */
-    public void updateUser(String email, String imageUrl) {
+    public UserDTO updateUser(UserDTO userDTO) {
+        AtomicReference<UserDTO> updated =new AtomicReference<>();
         SecurityUtils
                 .getCurrentUserLogin()
-                .flatMap(userRepository::findOneByUsername)
+                .flatMap(userRepository::findByUsername)
                 .ifPresent(user -> {
 
-                    if (email != null) {
-                        user.setEmail(email.toLowerCase());
+                    if (userDTO.getEmail() != null) {
+                        user.setEmail(userDTO.getEmail());
                     }
-                    user.setImageUrl(imageUrl);
+                    user.setImageUrl(userDTO.getImageUrl());
                     log.debug("Changed Information for User: {}", user);
+
+                    updated.set(userMapper.toDto(user));
                 });
+        return updated.get();
     }
     /*
         @Transactional
@@ -267,13 +273,15 @@ public class UserServiceImpl implements UserService {
                 });
     }
 */
+
     /**
      * Gets a list of all the authorities.
+     *
      * @return a list of all the authorities.
      */
     @Transactional(readOnly = true)
     public List<String> getAuthorities() {
-        return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+        return authorityRepository.findAll().stream().map(Role::getName).collect(Collectors.toList());
     }
 
 
@@ -291,8 +299,33 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDTO save(UserDTO user) {
-        User u = userMapper.toEntity(user);
-         userRepository.save(u);
-        return userMapper.toDto(u);
+        User newUser = new User();
+
+        String encryptedPassword =
+                passwordEncoder.encode(
+                        user.getPassword());
+        newUser.setUsername(user.getUsername());
+        // new user gets initially a generated password
+        newUser.setRole("USER");
+        newUser.setPassword(encryptedPassword);
+        if (user.getEmail() != null) {
+            newUser.setEmail(user.getEmail());
+        }
+        newUser.setImageUrl(user.getImageUrl());
+        //newUser = userMapper.toEntity(user);
+        userRepository.save(newUser);
+        return userMapper.toDto(newUser);
     }
+
+    @Override
+    public UserDTO getCurrentUser() {
+        System.out.println(SecurityContextHolder.getContext().
+                getAuthentication().getName());
+        User currentUser = userRepository.findByUsername(
+                SecurityContextHolder.getContext().
+                        getAuthentication().getName()).get();
+        return userMapper.toDto(currentUser);
+    }
+
+
 }

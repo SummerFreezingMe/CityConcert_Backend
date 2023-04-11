@@ -1,24 +1,20 @@
 package com.cityconcert.controller;
 
 import com.cityconcert.domain.dto.UserDTO;
-import com.cityconcert.mapper.UserMapper;
+import com.cityconcert.service.impl.AuthServiceImpl;
 import com.cityconcert.service.impl.UserServiceImpl;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class RegistrationController {
 
     private final UserServiceImpl userService;
 
-    private UserMapper userMapper;
-
-    public RegistrationController(UserServiceImpl userService, UserMapper userMapper) {
+    private final AuthServiceImpl authService;
+    public RegistrationController(UserServiceImpl userService, AuthServiceImpl authService) {
         this.userService = userService;
-        this.userMapper = userMapper;
+
+        this.authService = authService;
     }
 
 
@@ -32,12 +28,9 @@ public class RegistrationController {
         return null;
     }
 
-    @PostMapping("/login")
-    public Object login(@RequestBody UserDTO user) {
+    @GetMapping("/login")
+    public Object loginUser(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
 
-        if (user.getPassword().equals(user.getPasswordConfirm())){
-            return userService.save(user);
-        }
-        return null;
+        return authService.login(username,password);
     }
 }

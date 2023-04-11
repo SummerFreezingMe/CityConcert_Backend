@@ -1,46 +1,43 @@
 package com.cityconcert.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
  * An authority (a security role) used by Spring Security.
  */
+@Setter
+@Getter
 @Entity
-@Table(name = "authority")
-public class Authority implements Serializable {
+@Table(name = "role")
+public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @NotNull
     @Size(max = 50)
-    @Id
     @Column(length = 50)
     private String name;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Authority)) {
+        if (!(o instanceof Role)) {
             return false;
         }
-        return Objects.equals(name, ((Authority) o).name);
+        return Objects.equals(name, ((Role) o).name);
     }
 
     @Override
