@@ -1,9 +1,9 @@
 package com.cityconcert.repository;
 
-import com.cityconcert.domain.Authority;
+import com.cityconcert.domain.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Spring Data JPA repository for the {@link Authority} entity.
+ * Spring Data JPA repository for the {@link Role} entity.
  */
-public interface AuthorityRepository extends JpaRepository<Authority, String> {}
+public interface AuthorityRepository extends JpaRepository<Role, String> {}

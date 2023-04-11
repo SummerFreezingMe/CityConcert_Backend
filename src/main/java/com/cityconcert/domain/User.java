@@ -2,19 +2,14 @@ package com.cityconcert.domain;
 
 import com.cityconcert.config.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import org.hibernate.annotations.BatchSize;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 
 /**
  * A user.
@@ -55,12 +50,13 @@ public class User
 
     @Transient
     private String passwordConfirm;
-
-    private SimpleGrantedAuthority role;
+    @Column(name = "role")
+    private String role;
 
     @Size(max = 256)
     @Column(name = "image_url", length = 256)
     private String imageUrl;
+
 
 
     public Long getId() {
@@ -151,11 +147,11 @@ public class User
         this.passwordConfirm = passwordConfirm;
     }
 
-    public SimpleGrantedAuthority getRole() {
+    public String getRole() {
         return role;
     }
 
     public void setRole(String role) {
-        this.role = new SimpleGrantedAuthority("ROLE_"+role);
+        this.role = role;
     }
 }
