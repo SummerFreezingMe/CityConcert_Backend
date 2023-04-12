@@ -1,10 +1,8 @@
 package com.cityconcert.service.impl;
 
-import com.cityconcert.domain.Role;
 import com.cityconcert.domain.User;
 import com.cityconcert.domain.dto.UserDTO;
 import com.cityconcert.mapper.UserMapper;
-import com.cityconcert.repository.AuthorityRepository;
 import com.cityconcert.repository.UserRepository;
 import com.cityconcert.security.SecurityUtils;
 import com.cityconcert.service.UserService;
@@ -28,14 +26,11 @@ private String currentPassword;
 
     private final UserMapper userMapper;
 
-    private final AuthorityRepository authorityRepository;
-
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-        this.authorityRepository = authorityRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -155,41 +150,7 @@ private String currentPassword;
 //        return user;
 //    }
 
-    /**
-     * Update all information for a specific user, and return the modified user.
-     * <p>
-     * //@param userDTO user to update.
-     *
-     * @return updated user.
-     */
-   /* public Optional<AdminUserDTO> updateUser(AdminUserDTO userDTO) {
-        return Optional
-                .of(userRepository.findById(userDTO.getId()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(user -> {
-                    user.setUsername(userDTO.getLogin().toLowerCase());
 
-                    if (userDTO.getEmail() != null) {
-                        user.setEmail(userDTO.getEmail().toLowerCase());
-                    }
-                    user.setImageUrl(userDTO.getImageUrl());
-                    user.setActivated(userDTO.isActivated());
-                    Set<Authority> managedAuthorities = user.getAuthorities();
-                    managedAuthorities.clear();
-                    userDTO
-                            .getAuthorities()
-                            .stream()
-                            .map(authorityRepository::findById)
-                            .filter(Optional::isPresent)
-                            .map(Optional::get)
-                            .forEach(managedAuthorities::add);
-                    log.debug("Changed Information for User: {}", user);
-                    return user;
-                })
-                .map(AdminUserDTO::new);
-    }
-*/
     public void deleteUser(String login) {
         userRepository
                 .findByUsername(login)
@@ -273,16 +234,6 @@ private String currentPassword;
                 });
     }
 */
-
-    /**
-     * Gets a list of all the authorities.
-     *
-     * @return a list of all the authorities.
-     */
-    @Transactional(readOnly = true)
-    public List<String> getAuthorities() {
-        return authorityRepository.findAll().stream().map(Role::getName).collect(Collectors.toList());
-    }
 
 
     @Transactional(readOnly = true)
