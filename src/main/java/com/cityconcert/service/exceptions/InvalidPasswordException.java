@@ -1,4 +1,4 @@
-package com.cityconcert.service;
+package com.cityconcert.service.exceptions;
 
 public class InvalidPasswordException extends RuntimeException {
 

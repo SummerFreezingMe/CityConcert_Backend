@@ -9,4 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class AbstractRequest  {}
+public abstract class AbstractRequest  {
+    Long id;
+
+    Long userId;
+
+    String description;
+}

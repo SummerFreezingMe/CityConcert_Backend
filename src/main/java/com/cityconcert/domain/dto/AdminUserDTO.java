@@ -1,12 +1,10 @@
 package com.cityconcert.domain.dto;
 
 import com.cityconcert.config.Constants;
-import com.cityconcert.domain.Authority;
 import com.cityconcert.domain.User;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.validation.constraints.*;
 
 /**
@@ -54,10 +52,10 @@ public class AdminUserDTO implements Serializable {
         this.email = user.getEmail();
         this.activated = user.isActivated();
         this.imageUrl = user.getImageUrl();
-        this.createdBy = user.getCreatedBy();
-        this.createdDate = user.getCreatedDate();
-        this.lastModifiedBy = user.getLastModifiedBy();
-        this.lastModifiedDate = user.getLastModifiedDate();
+        //  this.createdBy = user.getCreatedBy();
+        //this.createdDate = user.getCreatedDate();
+        //this.lastModifiedBy = user.getLastModifiedBy();
+        //this.lastModifiedDate = user.getLastModifiedDate();
       //  this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet());
     }
 
