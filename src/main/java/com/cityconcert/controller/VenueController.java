@@ -4,29 +4,22 @@ import com.cityconcert.domain.dto.VenueDTO;
 import com.cityconcert.service.impl.VenueServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping(value = "venue")
+@RequestMapping(value = "/venue")
 public class VenueController {
-
-    private final VenueServiceImpl vsi;
-
+    private final VenueServiceImpl venueService;
     public VenueController(VenueServiceImpl vsi) {
-        this.vsi = vsi;
+        this.venueService = vsi;
     }
-
-    @PostMapping(value = "/add", produces = {"application/json", "application/xml"})
-    public VenueDTO addVenue(@RequestBody VenueDTO venue) {
-        return vsi.save(venue);
-    }
-
     @GetMapping(value = "/get/{id}", produces = {"application/json", "application/xml"})
     public VenueDTO getVenue(@PathVariable Long id) {
-        return vsi.findOne(id).get();
+        return venueService.findOne(id).get();
     }
 
-    @DeleteMapping(value = "/delete/{id}",
-            produces = {"application/json", "application/xml"})
-    public void deleteVenue(@PathVariable Long id) {
-       vsi.delete(id);
+    @GetMapping(value = "/get_all", produces = {"application/json", "application/xml"})
+    public List<VenueDTO> getVenues() {
+        return venueService.findAll();
     }
 }
