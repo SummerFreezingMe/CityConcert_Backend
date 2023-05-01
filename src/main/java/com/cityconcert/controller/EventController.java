@@ -15,26 +15,11 @@ public class EventController {
         this.esi = esi;
     }
 
-    @PostMapping(value = "/add", produces = {"application/json", "application/xml"})
-    public EventDTO addEvent(@RequestBody EventDTO event) {
-        return esi.save(event);
-    }
-
-    @PostMapping(value = "/update", produces = {"application/json", "application/xml"})
-    public EventDTO updateEvent(@RequestBody EventDTO event) {
-        return esi.update(event);
-    }
-
     @GetMapping(value = "/get/{id}", produces = {"application/json", "application/xml"})
     public EventDTO getEvent(@PathVariable Long id) {
         return esi.findOne(id).get();
     }
 
-    @DeleteMapping(value = "/delete/{id}",
-            produces = {"application/json", "application/xml"})
-    public void deleteEvent(@PathVariable Long id) {
-        esi.delete(id);
-    }
 
     @GetMapping(value = "/get_all", produces = {"application/json", "application/xml"})
     public List<EventDTO> displayAllEvents() {
