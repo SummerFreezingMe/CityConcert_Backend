@@ -28,9 +28,12 @@ public class TicketServiceImpl implements TicketService {
 
     private final TicketMapper ticketMapper;
 
-    public TicketServiceImpl(TicketRepository ticketRepository, TicketMapper ticketMapper) {
+    private final UserServiceImpl userService;
+
+    public TicketServiceImpl(TicketRepository ticketRepository, TicketMapper ticketMapper, UserServiceImpl userService) {
         this.ticketRepository = ticketRepository;
         this.ticketMapper = ticketMapper;
+        this.userService = userService;
     }
 
     @Override
@@ -91,10 +94,15 @@ public class TicketServiceImpl implements TicketService {
     }
 
     public TicketDTO buyTicket(Long id) {
-        Ticket boughtTicket = ticketRepository.findById(id).get();
-        boughtTicket.setStatus(TicketStatus.SOLD);
+        Ticket boughtTicket = ticketRepository.findById(id).orElse(null);
+        if (boughtTicket != null) {
+            boughtTicket.setStatus(TicketStatus.SOLD);
 
-        ticketRepository.save(boughtTicket);
+        if (userService.getCurrentUser()!=null) {
+            boughtTicket.setUserId(userService.getCurrentUser().getId());
+        }else
+            boughtTicket.setUserId(0L);
+        ticketRepository.save(boughtTicket); }
         return ticketMapper.toDto(boughtTicket);
     }
 }

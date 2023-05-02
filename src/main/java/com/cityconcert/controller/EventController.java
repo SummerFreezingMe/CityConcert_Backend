@@ -4,6 +4,7 @@ import com.cityconcert.domain.dto.EventDTO;
 import com.cityconcert.service.impl.EventServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -32,8 +33,8 @@ public class EventController {
         return esi.findByDescriptor(descriptor);
     }
     @GetMapping(value = "/filter_by_date/{date}", produces = {"application/json", "application/xml"})
-    public List<EventDTO> filterEventsByDate(@PathVariable String date) {
-        return esi.findByDate(date);
+    public List<EventDTO> filterEventsByDate(@RequestBody String startDate, @RequestBody String endDate) {
+        return esi.findByDate(LocalDateTime.parse(startDate), LocalDateTime.parse(endDate));
     }
     @GetMapping(value = "/filter_by_name/{name}", produces = {"application/json", "application/xml"})
     public List<EventDTO> filterEventsByName(@PathVariable String name) {

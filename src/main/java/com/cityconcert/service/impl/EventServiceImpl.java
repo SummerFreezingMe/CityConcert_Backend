@@ -10,9 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -94,8 +93,19 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDTO> findByDate(String date) {
-        return null;
+    public List<EventDTO> findByDate(LocalDateTime dateFirst, LocalDateTime dateLast) {
+        List<Event> eventsByDate =
+                eventRepository.findEventByDate(dateFirst, dateLast);
+        return eventsByDate.stream().map(eventMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
+    public List<EventDTO> findByPrice(Double priceLowest, Double priceHighest) {
+        List<Event> eventByPrice =
+                eventRepository.findEventByTicketPrice(priceLowest, priceHighest);
+        return eventByPrice.stream().map(eventMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
