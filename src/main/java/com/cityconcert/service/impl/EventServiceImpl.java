@@ -116,6 +116,14 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    public void updateStatus() {
+    @Override
+    public List<EventDTO> findByFilters(Map<String, Object> filters) {
+        List<EventDTO> eventsByGenre = findByDescriptor(String.valueOf(filters.get("genre")));
+        List<EventDTO> eventsByDate = findByDate((LocalDateTime) filters.get("date_first"), (LocalDateTime) filters.get("date_last"));
+        List<EventDTO> eventsByPrice = findByPrice((Double) filters.get("price_lowest"), (Double) filters.get("price_highest"));
+        eventsByGenre.retainAll(eventsByPrice);
+        eventsByGenre.retainAll(eventsByDate);
+        return eventsByGenre;
     }
+
 }

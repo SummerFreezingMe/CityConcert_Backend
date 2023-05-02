@@ -4,6 +4,7 @@ import com.cityconcert.domain.dto.EventDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -64,4 +65,6 @@ public interface EventService {
     List<EventDTO> findByPrice(Double priceLowest, Double priceHighest);
 
     List<EventDTO> findByName(String name);
+
+    List<EventDTO> findByFilters(Map<String, Object> filters);
 }
