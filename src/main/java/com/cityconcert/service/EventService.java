@@ -57,7 +57,7 @@ public interface EventService {
      */
     void delete(Long id);
 
-    List<EventDTO> findByDescriptor(String descriptor);
+    List<EventDTO> findByDescriptor(List<String> descriptors);
 
 
     List<EventDTO> findByDate(LocalDateTime dateFirst, LocalDateTime dateLast);

@@ -85,9 +85,14 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDTO> findByDescriptor(String descriptor) {
+    public List<EventDTO> findByDescriptor(List<String> descriptors) {
         List<Event> allEvents = eventRepository.findAll();
-        allEvents.removeIf(e -> !e.getGenreDescriptors().contains(descriptor));
+        for (String descriptor:
+             descriptors) {
+            allEvents.removeIf(e -> !e.getGenreDescriptors().contains(descriptor));
+
+
+        }
         return allEvents.stream().map(eventMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -118,7 +123,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventDTO> findByFilters(Map<String, Object> filters) {
-        List<EventDTO> eventsByGenre = findByDescriptor(String.valueOf(filters.get("genre")));
+        List<EventDTO> eventsByGenre = findByDescriptor((List<String>) filters.get("genre"));
         List<EventDTO> eventsByDate = findByDate((LocalDateTime) filters.get("date_first"), (LocalDateTime) filters.get("date_last"));
         List<EventDTO> eventsByPrice = findByPrice((Double) filters.get("price_lowest"), (Double) filters.get("price_highest"));
         eventsByGenre.retainAll(eventsByPrice);

@@ -30,7 +30,7 @@ public class EventController {
 
 
     @PostMapping(value = "/filter_by_genre/{descriptor}", produces = {"application/json", "application/xml"})
-    public List<EventDTO> filterEventsByGenre(@PathVariable String descriptor) {
+    public List<EventDTO> filterEventsByGenre(@PathVariable List<String> descriptor) {
         return esi.findByDescriptor(descriptor);
     }
     @PostMapping(value = "/filter_by_date", produces = {"application/json", "application/xml"})
