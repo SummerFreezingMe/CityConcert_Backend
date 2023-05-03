@@ -10,9 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -86,16 +85,35 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDTO> findByDescriptor(String descriptor) {
+    public List<EventDTO> findByDescriptor(List<String> descriptors) {
         List<Event> allEvents = eventRepository.findAll();
-        allEvents.removeIf(e -> !e.getGenreDescriptors().contains(descriptor));
+        List<Event> selectedEvents = new ArrayList<>();
+        for (String descriptor:
+             descriptors) {
+            allEvents.removeIf(e -> !e.getGenreDescriptors().contains(descriptor));
+                List<Event> eventsByDescriptor= allEvents.stream().filter(e -> e.getGenreDescriptors().contains(descriptor)
+                                && !selectedEvents.contains(e))
+                    .collect(Collectors.toList());
+                selectedEvents.addAll(eventsByDescriptor);
+        }
         return allEvents.stream().map(eventMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
-    public List<EventDTO> findByDate(String date) {
-        return null;
+    public List<EventDTO> findByDate(LocalDateTime dateFirst, LocalDateTime dateLast) {
+        List<Event> eventsByDate =
+                eventRepository.findEventByDate(dateFirst, dateLast);
+        return eventsByDate.stream().map(eventMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
+    public List<EventDTO> findByPrice(Double priceLowest, Double priceHighest) {
+        List<Event> eventByPrice =
+                eventRepository.findEventByTicketPrice(priceLowest, priceHighest);
+        return eventByPrice.stream().map(eventMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
@@ -106,6 +124,14 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    public void updateStatus() {
+    @Override
+    public List<EventDTO> findByFilters(Map<String, Object> filters) {
+        List<EventDTO> eventsByGenre = findByDescriptor((List<String>) filters.get("genre"));
+        List<EventDTO> eventsByDate = findByDate((LocalDateTime) filters.get("date_first"), (LocalDateTime) filters.get("date_last"));
+        List<EventDTO> eventsByPrice = findByPrice((Double) filters.get("price_lowest"), (Double) filters.get("price_highest"));
+        eventsByGenre.retainAll(eventsByPrice);
+        eventsByGenre.retainAll(eventsByDate);
+        return eventsByGenre;
     }
+
 }

@@ -15,7 +15,7 @@ import java.util.Locale;
  * A user.
  */
 @Entity
-@Table(name="\"user\"")
+@Table(name="app_user")
 public class User
        // extends AbstractAuditingEntity<Long>
         implements Serializable {
