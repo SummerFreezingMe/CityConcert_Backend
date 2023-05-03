@@ -306,7 +306,7 @@ private String currentPassword;
                         user.getPassword());
         newUser.setUsername(user.getUsername());
         // new user gets initially a generated password
-        newUser.setRole("USER");
+        newUser.setRole(user.getRole());
         newUser.setPassword(encryptedPassword);
         if (user.getEmail() != null) {
             newUser.setEmail(user.getEmail());

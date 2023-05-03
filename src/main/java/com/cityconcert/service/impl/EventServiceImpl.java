@@ -87,11 +87,14 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDTO> findByDescriptor(List<String> descriptors) {
         List<Event> allEvents = eventRepository.findAll();
+        List<Event> selectedEvents = new ArrayList<>();
         for (String descriptor:
              descriptors) {
             allEvents.removeIf(e -> !e.getGenreDescriptors().contains(descriptor));
-
-
+                List<Event> eventsByDescriptor= allEvents.stream().filter(e -> e.getGenreDescriptors().contains(descriptor)
+                                && !selectedEvents.contains(e))
+                    .collect(Collectors.toList());
+                selectedEvents.addAll(eventsByDescriptor);
         }
         return allEvents.stream().map(eventMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new));

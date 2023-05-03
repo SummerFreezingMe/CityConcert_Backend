@@ -29,13 +29,13 @@ public class EventController {
     }
 
 
-    @PostMapping(value = "/filter_by_genre/{descriptor}", produces = {"application/json", "application/xml"})
-    public List<EventDTO> filterEventsByGenre(@PathVariable List<String> descriptor) {
+    @PostMapping(value = "/filter_by_genre", produces = {"application/json", "application/xml"})
+    public List<EventDTO> filterEventsByGenre(@RequestBody List<String> descriptor) {
         return esi.findByDescriptor(descriptor);
     }
     @PostMapping(value = "/filter_by_date", produces = {"application/json", "application/xml"})
-    public List<EventDTO> filterEventsByDate(@RequestBody String startDate, @RequestBody String endDate) {
-        return esi.findByDate(LocalDateTime.parse(startDate), LocalDateTime.parse(endDate));
+    public List<EventDTO> filterEventsByDate(@RequestBody Map<String,LocalDateTime>payload) {
+        return esi.findByDate(payload.get("start_date"), payload.get("end_date"));
     }
     @GetMapping(value = "/filter_by_name/{name}", produces = {"application/json", "application/xml"})
     public List<EventDTO> filterEventsByName(@PathVariable String name) {
