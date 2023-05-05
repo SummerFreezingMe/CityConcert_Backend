@@ -1,5 +1,6 @@
 package com.cityconcert.service;
 
+import com.cityconcert.domain.dto.RequestDTO;
 import com.cityconcert.domain.dto.TicketDTO;
 import java.util.List;
 import java.util.Optional;
@@ -55,4 +56,6 @@ public interface TicketService {
     void delete(Long id);
 
     List<TicketDTO> ticketsByUser(Long userId);
+
+    TicketDTO exchangeTickets(RequestDTO exchangeRequest);
 }
