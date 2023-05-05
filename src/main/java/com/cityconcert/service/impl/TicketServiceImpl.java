@@ -1,6 +1,7 @@
 package com.cityconcert.service.impl;
 
 import com.cityconcert.domain.Ticket;
+import com.cityconcert.domain.dto.RequestDTO;
 import com.cityconcert.domain.enumeration.TicketStatus;
 import com.cityconcert.repository.TicketRepository;
 import com.cityconcert.service.TicketService;
@@ -91,6 +92,23 @@ public class TicketServiceImpl implements TicketService {
     public List<TicketDTO> ticketsByUser(Long userId) {
         return ticketRepository.findByUserId(userId).stream().map(ticketMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
+    public TicketDTO exchangeTickets(RequestDTO exchangeRequest) {
+        Long currentUserId = userService.getCurrentUser().getId();
+        Ticket ticketFromRequestAuthor = ticketRepository.findBySeatAndUserId(
+                exchangeRequest.getCurrentSeat(),exchangeRequest.getUserId()
+        ).orElse(null);
+        Ticket ticketFromCurrentUser = ticketRepository.findBySeatAndUserId(
+                exchangeRequest.getSeatFromUser(), currentUserId
+        ).orElse(null);
+        if (exchangeRequest.getWantedSeat().contains(exchangeRequest.getSeatFromUser()) &&
+                (ticketFromCurrentUser != null) && (ticketFromRequestAuthor != null)) {
+ticketFromCurrentUser.setUserId(exchangeRequest.getUserId());
+ticketFromRequestAuthor.setUserId(currentUserId);
+        }
+        return ticketMapper.toDto(ticketFromCurrentUser);
     }
 
     public TicketDTO buyTicket(Long id) {

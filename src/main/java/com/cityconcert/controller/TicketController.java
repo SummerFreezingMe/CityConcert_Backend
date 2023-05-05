@@ -1,5 +1,6 @@
 package com.cityconcert.controller;
 
+import com.cityconcert.domain.dto.RequestDTO;
 import com.cityconcert.domain.dto.TicketDTO;
 import com.cityconcert.service.impl.TicketServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,4 +49,11 @@ public class TicketController {
         return tsi.ticketsByUser(userId);
     }
 
+    @PostMapping(value = "/exchange", produces = {"application/json", "application/xml"})
+    @Operation(summary = "Обмен билетов между пользователями")
+    public TicketDTO exchangeTickets(@RequestBody RequestDTO exchangeRequest) {
+        return tsi.exchangeTickets(exchangeRequest);
+    }
+
 }
+
