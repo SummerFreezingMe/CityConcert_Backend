@@ -14,6 +14,8 @@ public class RequestDTO {
 
     Long userId;
 
+    Long eventId;
+
     RequestType requestType;
 
     String description;
@@ -21,4 +23,6 @@ public class RequestDTO {
     String currentSeat;
 
     String wantedSeat;
+
+    String seatFromUser;
 }
