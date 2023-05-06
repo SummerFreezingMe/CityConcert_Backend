@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class EventController {
     @GetMapping(value = "/get/{id}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Получаем экземпляр мероприятия по его Id")
     public EventDTO getEvent(@PathVariable Long id) {
-        return esi.findOne(id).orElse(null);
+        return esi.findOne(id).orElseThrow(EntityNotFoundException::new);
     }
 
 

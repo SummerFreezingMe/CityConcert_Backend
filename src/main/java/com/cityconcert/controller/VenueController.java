@@ -19,7 +19,7 @@ public class VenueController {
     @GetMapping(value = "/get/{id}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Возвращаем экземпляр площадки по его Id")
     public VenueDTO getVenue(@PathVariable Long id) {
-        return venueService.findOne(id).orElse(null);
+        return venueService.findOne(id);
     }
 
     @GetMapping(value = "/get_all", produces = {"application/json", "application/xml"})
