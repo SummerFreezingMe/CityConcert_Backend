@@ -54,6 +54,10 @@ public class TicketController {
     public TicketDTO exchangeTickets(@RequestBody RequestDTO exchangeRequest) {
         return tsi.exchangeTickets(exchangeRequest);
     }
-
+    @PostMapping(value = "/mail", produces = {"application/json", "application/xml"})
+    @Operation(summary = "Отправка билета по почте")
+    public TicketDTO mailTicket(@RequestBody TicketDTO ticket) {
+        return tsi.mailTicket(ticket);
+    }
 }
 
