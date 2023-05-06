@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+
 /**
  * Service Implementation for managing {@link Venue}.
  */
@@ -72,9 +74,10 @@ public class VenueServiceImpl implements VenueService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<VenueDTO> findOne(Long id) {
+    public VenueDTO findOne(Long id) {
         log.debug("Request to get Venue : {}", id);
-        return venueRepository.findById(id).map(venueMapper::toDto);
+        Venue venue =venueRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return venueMapper.toDto(venue);
     }
 
     @Override

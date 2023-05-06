@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
@@ -21,7 +22,7 @@ public class RequestController {
     @GetMapping(value = "/get/{id}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Получаем экземпляр запроса по его Id")
     public RequestDTO getEvent(@PathVariable Long id) {
-        return requestService.findOne(id).orElse(null);
+        return requestService.findOne(id).orElseThrow(EntityNotFoundException::new);
     }
 
 

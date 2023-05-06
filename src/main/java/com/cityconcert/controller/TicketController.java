@@ -2,6 +2,7 @@ package com.cityconcert.controller;
 
 import com.cityconcert.domain.dto.RequestDTO;
 import com.cityconcert.domain.dto.TicketDTO;
+import com.cityconcert.service.exceptions.TicketNotFoundException;
 import com.cityconcert.service.impl.TicketServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +28,7 @@ public class TicketController {
     @GetMapping(value = "/get/{id}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Получаем экземпляр билета по его Id")
     public TicketDTO getTicket(@PathVariable Long id) {
-        return tsi.findOne(id).orElse(null);
+        return tsi.findOne(id).orElseThrow(TicketNotFoundException::new);
     }
 
     @DeleteMapping(value = "/delete/{id}",

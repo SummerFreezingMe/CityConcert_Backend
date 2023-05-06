@@ -4,6 +4,7 @@ import com.cityconcert.domain.User;
 import com.cityconcert.mapper.UserMapper;
 import com.cityconcert.repository.UserRepository;
 import com.cityconcert.service.AuthService;
+import com.cityconcert.service.exceptions.InvalidPasswordException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,12 +34,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Object login(String login, String password) {
-        User   user = userRepository.findByUsername(login).get();
-        if (user!=null) {
+        User user = userRepository.findByUsername(login).orElseThrow(() ->
+                new UsernameNotFoundException("User not found with username: "+ login));
+        if (password.equals(user.getPassword())) {
             Authentication authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),password));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
+        }else throw new InvalidPasswordException();
         return userMapper.toDto(user);
     }
 
@@ -48,9 +50,7 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with username or email: "+ username));
-
         Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_"+user.getRole()));
-
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(),
                 authorities);

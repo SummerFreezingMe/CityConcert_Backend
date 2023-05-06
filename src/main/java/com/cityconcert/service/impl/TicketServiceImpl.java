@@ -3,21 +3,22 @@ package com.cityconcert.service.impl;
 import com.cityconcert.domain.Ticket;
 import com.cityconcert.domain.dto.EventDTO;
 import com.cityconcert.domain.dto.RequestDTO;
+import com.cityconcert.domain.dto.TicketDTO;
 import com.cityconcert.domain.enumeration.TicketStatus;
+import com.cityconcert.mapper.TicketMapper;
 import com.cityconcert.repository.TicketRepository;
 import com.cityconcert.service.TicketService;
-import com.cityconcert.domain.dto.TicketDTO;
-import com.cityconcert.mapper.TicketMapper;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
+import com.cityconcert.service.exceptions.TicketNotFoundException;
 import com.cityconcert.service.mail.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link Ticket}.
@@ -67,14 +68,14 @@ public class TicketServiceImpl implements TicketService {
         log.debug("Request to partially update Ticket : {}", ticketDTO);
 
         return ticketRepository
-            .findById(ticketDTO.getId())
-            .map(existingTicket -> {
-                ticketMapper.partialUpdate(existingTicket, ticketDTO);
+                .findById(ticketDTO.getId())
+                .map(existingTicket -> {
+                    ticketMapper.partialUpdate(existingTicket, ticketDTO);
 
-                return existingTicket;
-            })
-            .map(ticketRepository::save)
-            .map(ticketMapper::toDto);
+                    return existingTicket;
+                })
+                .map(ticketRepository::save)
+                .map(ticketMapper::toDto);
     }
 
     @Override
@@ -107,26 +108,23 @@ public class TicketServiceImpl implements TicketService {
     public TicketDTO exchangeTickets(RequestDTO exchangeRequest) {
         Long currentUserId = userService.getCurrentUser().getId();
         Ticket ticketFromRequestAuthor = ticketRepository.findBySeatAndUserId(
-                exchangeRequest.getCurrentSeat(),exchangeRequest.getUserId()
-        ).orElse(null);
+                exchangeRequest.getCurrentSeat(), exchangeRequest.getUserId()
+        ).orElseThrow(TicketNotFoundException::new);
         Ticket ticketFromCurrentUser = ticketRepository.findBySeatAndUserId(
                 exchangeRequest.getSeatFromUser(), currentUserId
-        ).orElse(null);
-        if (exchangeRequest.getWantedSeat().contains(exchangeRequest.getSeatFromUser()) &&
-                (ticketFromCurrentUser != null) && (ticketFromRequestAuthor != null)) {
-ticketFromCurrentUser.setUserId(exchangeRequest.getUserId());
-ticketFromRequestAuthor.setUserId(currentUserId);
+        ).orElseThrow(TicketNotFoundException::new);
+        if (exchangeRequest.getWantedSeat().contains(exchangeRequest.getSeatFromUser())) {
+            ticketFromCurrentUser.setUserId(exchangeRequest.getUserId());
+            ticketFromRequestAuthor.setUserId(currentUserId);
         }
         return ticketMapper.toDto(ticketFromCurrentUser);
     }
 
     @Override
     public TicketDTO mailTicket(TicketDTO ticket) {
-        EventDTO event = eventService.findOne(ticket.getEventId()).orElse(null);
-        String mailMessage = "";
-        if (event != null) {
-          mailMessage = "Here is your ticket: "+ticket.getSeat()+" на мероприятие "+event.getName();
-        }
+        EventDTO event = eventService.findOne(ticket.getEventId()).orElseThrow(TicketNotFoundException::new);
+        String mailMessage;
+        mailMessage = "Here is your ticket: " + ticket.getSeat() + " на мероприятие " + event.getName();
         String finalMailMessage = mailMessage;
         userService.findOne(ticket.getUserId()).ifPresent(
                 ticketOwner -> mailService.sendEmail(ticketOwner.getEmail(),
@@ -135,15 +133,13 @@ ticketFromRequestAuthor.setUserId(currentUserId);
     }
 
     public TicketDTO buyTicket(Long id) {
-        Ticket boughtTicket = ticketRepository.findById(id).orElse(null);
-        if (boughtTicket != null) {
+        Ticket boughtTicket = ticketRepository.findById(id).orElseThrow(TicketNotFoundException::new);
             boughtTicket.setStatus(TicketStatus.SOLD);
-
-        if (userService.getCurrentUser()!=null) {
-            boughtTicket.setUserId(userService.getCurrentUser().getId());
-        }else
-            boughtTicket.setUserId(0L);
-        ticketRepository.save(boughtTicket); }
+            if (userService.getCurrentUser() != null) {
+                boughtTicket.setUserId(userService.getCurrentUser().getId());
+            } else{
+                boughtTicket.setUserId(0L);}
+            ticketRepository.save(boughtTicket);
         return ticketMapper.toDto(boughtTicket);
     }
 }
