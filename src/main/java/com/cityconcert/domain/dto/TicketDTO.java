@@ -67,11 +67,11 @@ public class TicketDTO implements Serializable {
     }
 
 
-    public Long getUser() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUser(Long user) {
+    public void setUserId(Long user) {
         this.userId = user;
     }
 
@@ -113,7 +113,7 @@ public class TicketDTO implements Serializable {
             ", seat='" + getSeat() + "'" +
             ", status='" + getStatus() + "'" +
             ", purchaseDate='" + getPurchaseDate() + "'" +
-            ", userId=" + getUser() +
+            ", userId=" + getUserId() +
             ", eventId=" + getEventId() +
             "}";
     }
