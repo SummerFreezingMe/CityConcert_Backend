@@ -3,13 +3,13 @@ package com.cityconcert.service.exceptions;
 import com.cityconcert.domain.dto.ResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class CustomExceptionHandler  extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
@@ -25,7 +25,7 @@ public class CustomExceptionHandler  extends ResponseEntityExceptionHandler {
     protected ResponseEntity<ResponseDTO> handleEmailAlreadyUsedException(EmailAlreadyUsedException e){
         ResponseDTO response = new ResponseDTO();
         if (e.getMessage()!=null) response.setMessage(e.getMessage());
-        else response.setMessage("Authorization error");
+        else response.setMessage("Authorization error: Email is already in use!");
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
@@ -34,7 +34,7 @@ public class CustomExceptionHandler  extends ResponseEntityExceptionHandler {
             InvalidPasswordException e){
         ResponseDTO response = new ResponseDTO();
         if (e.getMessage()!=null) response.setMessage(e.getMessage());
-        else response.setMessage("Authorization error");
+        else response.setMessage("Authorization error: Incorrect password!");
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
@@ -43,7 +43,15 @@ public class CustomExceptionHandler  extends ResponseEntityExceptionHandler {
             UsernameAlreadyUsedException e){
         ResponseDTO response = new ResponseDTO();
         if (e.getMessage()!=null) response.setMessage(e.getMessage());
-        else response.setMessage("Authorization error");
+        else response.setMessage("Authorization error: Login name already used!");
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler(TicketNotFoundException.class)
+    protected ResponseEntity<ResponseDTO> handleTicketNotFoundException(
+            TicketNotFoundException e){
+        ResponseDTO response = new ResponseDTO();
+        if (e.getMessage()!=null) response.setMessage(e.getMessage());
+        else response.setMessage("Ticket Not Found");
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 }
