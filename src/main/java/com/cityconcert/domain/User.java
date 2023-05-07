@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -53,9 +54,8 @@ public class User
     @Column(name = "role")
     private String role;
 
-    @Size(max = 256)
-    @Column(name = "image_url", length = 256)
-    private String imageUrl;
+    @Column(name = "image", length = 256)
+    private byte[] imageUrl;
 
 
 
@@ -93,11 +93,11 @@ public class User
         this.email = email;
     }
 
-    public String getImageUrl() {
+    public byte[] getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public void setImageUrl(byte[] imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -134,7 +134,7 @@ public class User
         return "User{" +
             "login='" + username + '\'' +
             ", email='" + email + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
+            ", imageUrl='" + Arrays.toString(imageUrl) + '\'' +
             ", activated='" + activated + '\'' +
             "}";
     }

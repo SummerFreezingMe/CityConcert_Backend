@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
                     if (userDTO.getEmail() != null) {
                         user.setEmail(userDTO.getEmail());
                     }
-                    user.setImageUrl(userDTO.getImageUrl());
+                    user.setImageUrl(userDTO.getImage());
                     log.debug("Changed Information for User: {}", user);
 
                     updated.set(userMapper.toDto(user));
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
                 throw new UsernameAlreadyUsedException();
             }
         }
-        newUser.setImageUrl(user.getImageUrl());
+        newUser.setImageUrl(user.getImage());
         userRepository.save(newUser);
         return userMapper.toDto(newUser);
     }

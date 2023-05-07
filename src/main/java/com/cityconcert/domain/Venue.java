@@ -31,6 +31,9 @@ public class Venue implements Serializable {
     @Column(name = "capacity")
     private Integer capacity;
 
+    @Column(name = "image")
+    private byte[] image;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -63,11 +66,6 @@ public class Venue implements Serializable {
         return this.location;
     }
 
-    public Venue location(String location) {
-        this.setLocation(location);
-        return this;
-    }
-
     public void setLocation(String location) {
         this.location = location;
     }
@@ -87,11 +85,6 @@ public class Venue implements Serializable {
 
     public Integer getCapacity() {
         return this.capacity;
-    }
-
-    public Venue capacity(Integer capacity) {
-        this.setCapacity(capacity);
-        return this;
     }
 
     public void setCapacity(Integer capacity) {
@@ -127,5 +120,13 @@ public class Venue implements Serializable {
             ", description='" + getDescription() + "'" +
             ", capacity=" + getCapacity() +
             "}";
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }
