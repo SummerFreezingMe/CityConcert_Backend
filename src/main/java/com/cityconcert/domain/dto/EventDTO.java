@@ -23,7 +23,7 @@ public class EventDTO implements Serializable {
     private EventStatus status;
     private String genreDescriptors;
 
-
+    private byte[] image;
     private String description;
     private Long venue_id;
 
@@ -126,5 +126,13 @@ public class EventDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

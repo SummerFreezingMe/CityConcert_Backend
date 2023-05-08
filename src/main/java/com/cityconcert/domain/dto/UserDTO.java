@@ -19,7 +19,7 @@ public class UserDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
-private Long id;
+    private Long id;
     private String username;
 
     private String email;
@@ -28,14 +28,15 @@ private Long id;
     private String passwordConfirm;
 
     private String role;
-    private String imageUrl;
-    // prettier-ignore
+
+    private byte[] image;
+
     @Override
     public String toString() {
         return "UserDTO{" +
-            ", login='" + username + '\'' +
+                ", login='" + username + '\'' +
                 ", password='" + password + '\'' +
-            "}";
+                "}";
     }
 
 

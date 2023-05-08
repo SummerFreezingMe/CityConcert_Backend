@@ -19,6 +19,11 @@ public class VenueDTO implements Serializable {
 
     private Integer capacity;
 
+    private byte[] image;
+
+    public VenueDTO() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -90,5 +95,13 @@ public class VenueDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", capacity=" + getCapacity() +
             "}";
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }
