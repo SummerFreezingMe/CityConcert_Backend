@@ -44,7 +44,8 @@ public class Event implements Serializable {
     @Column(name = "venue_id")
     private Long venueId;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    @Column(name = "image")
+    private byte[] image;
 
     public Long getId() {
         return this.id;
@@ -78,11 +79,6 @@ public class Event implements Serializable {
         return this.startTime;
     }
 
-    public Event startTime(LocalDateTime startTime) {
-        this.setStartTime(startTime);
-        return this;
-    }
-
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
@@ -91,22 +87,12 @@ public class Event implements Serializable {
         return this.ticketLimit;
     }
 
-    public Event ticketLimit(Integer ticketLimit) {
-        this.setTicketLimit(ticketLimit);
-        return this;
-    }
-
     public void setTicketLimit(Integer ticketLimit) {
         this.ticketLimit = ticketLimit;
     }
 
     public EventStatus getStatus() {
         return this.status;
-    }
-
-    public Event status(EventStatus status) {
-        this.setStatus(status);
-        return this;
     }
 
     public void setStatus(EventStatus status) {
@@ -126,8 +112,6 @@ public class Event implements Serializable {
         return this;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -141,11 +125,9 @@ public class Event implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
-
-    // prettier-ignore
+    
     @Override
     public String toString() {
         return "Event{" +
@@ -174,5 +156,13 @@ public class Event implements Serializable {
 
     public void setGenreDescriptors(String genreDescriptors) {
         this.genreDescriptors = genreDescriptors;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }
