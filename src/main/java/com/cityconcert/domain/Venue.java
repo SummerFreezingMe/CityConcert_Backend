@@ -1,11 +1,20 @@
 package com.cityconcert.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
 /**
  * A Venue.
  */
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "venue")
 @SuppressWarnings("common-java:DuplicatedBlocks")
@@ -33,8 +42,6 @@ public class Venue implements Serializable {
 
     @Column(name = "image")
     private byte[] image;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
         return this.id;
@@ -90,8 +97,6 @@ public class Venue implements Serializable {
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
