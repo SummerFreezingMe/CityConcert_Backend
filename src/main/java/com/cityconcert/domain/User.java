@@ -42,6 +42,7 @@ public class User
 
 
     @Email
+    @Pattern(regexp = Constants.MAIL_REGEX)
     @Size(min = 5, max = 254)
     @Column(name = "email",length = 254, unique = true)
     private String email;
