@@ -90,8 +90,9 @@ public class EventServiceImpl implements EventService {
         List<Event> selectedEvents = new ArrayList<>();
         for (String descriptor:
              descriptors) {
-            allEvents.removeIf(e -> !e.getGenreDescriptors().contains(descriptor));
-                List<Event> eventsByDescriptor= allEvents.stream().filter(e -> e.getGenreDescriptors().contains(descriptor)
+            allEvents.removeIf(e -> !e.getGenreDescriptors().toLowerCase().contains(descriptor.toLowerCase()));
+                List<Event> eventsByDescriptor= allEvents.stream().filter(e ->
+                                e.getGenreDescriptors().toLowerCase().contains(descriptor.toLowerCase())
                                 && !selectedEvents.contains(e))
                     .collect(Collectors.toList());
                 selectedEvents.addAll(eventsByDescriptor);
