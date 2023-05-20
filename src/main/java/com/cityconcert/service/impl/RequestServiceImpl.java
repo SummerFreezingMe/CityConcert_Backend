@@ -2,6 +2,7 @@ package com.cityconcert.service.impl;
 
 import com.cityconcert.domain.Request;
 import com.cityconcert.domain.dto.RequestDTO;
+import com.cityconcert.domain.enumeration.RequestType;
 import com.cityconcert.mapper.RequestMapper;
 import com.cityconcert.repository.RequestRepository;
 import com.cityconcert.service.RequestService;
@@ -63,9 +64,10 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<RequestDTO> findAll() {
+    public List<RequestDTO> findAllByType(String type) {
         log.debug("Request to get all Requests");
-        return requestRepository.findAll().stream().map(requestMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+        return requestRepository.findRequestsByRequestType(RequestType.valueOf(type)).
+                stream().map(requestMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
 
     }
 }
