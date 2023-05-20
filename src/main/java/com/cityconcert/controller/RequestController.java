@@ -21,23 +21,28 @@ public class RequestController {
 
     @GetMapping(value = "/get/{id}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Получаем экземпляр запроса по его Id")
-    public RequestDTO getEvent(@PathVariable Long id) {
+    public RequestDTO getRequest(@PathVariable Long id) {
         return requestService.findOne(id).orElseThrow(EntityNotFoundException::new);
     }
 
 
-    @GetMapping(value = "/get_all", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Отображаем все запросы")
-    public List<RequestDTO> displayAllEvents() {
-        return requestService.findAll();
+    @GetMapping(value = "/get_by_type/{type}", produces = {"application/json", "application/xml"})
+    @Operation(summary = "Отображаем все запросы определённого типа")
+    public List<RequestDTO> displayAllRequestByType(@PathVariable String type) {
+        return requestService.findAllByType(type);
     }
 
     @PostMapping(value = "/update", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Обновляем экземпляр пользователя")
+    @Operation(summary = "Обновляем экземпляр запроса")
     public RequestDTO updateRequest(@RequestBody RequestDTO request) {
         return requestService.update(request);
     }
 
+    @PostMapping(value = "/add", produces = {"application/json", "application/xml"})
+    @Operation(summary = "Создаём новый экземпляр запроса")
+    public RequestDTO addRequest(@RequestBody RequestDTO request) {
+        return requestService.save(request);
+    }
 
     @DeleteMapping(value = "/delete/{id}",
             produces = {"application/json", "application/xml"})

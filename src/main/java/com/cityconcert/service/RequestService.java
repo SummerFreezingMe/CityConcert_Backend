@@ -14,5 +14,5 @@ public interface RequestService {
 
     void delete(Long id);
 
-    List<RequestDTO> findAll();
+    List<RequestDTO> findAllByType(String type);
 }
