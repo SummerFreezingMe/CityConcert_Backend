@@ -1,6 +1,8 @@
 package com.cityconcert.service;
 
 import com.cityconcert.domain.dto.EventDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,7 +42,7 @@ public interface EventService {
      *
      * @return the list of entities.
      */
-    List<EventDTO> findAll();
+    Page<EventDTO> findAll(PageRequest of);
 
     /**
      * Get the "id" event.
@@ -64,7 +66,7 @@ public interface EventService {
 
     List<EventDTO> findByPrice(Double priceLowest, Double priceHighest);
 
-    List<EventDTO> findByName(String name);
+    Page<EventDTO> findByName(String name, PageRequest of);
 
-    List<EventDTO> findByFilters(Map<String, Object> filters);
+    Page<EventDTO> findByFilters(Map<String, Object> filters, PageRequest of);
 }

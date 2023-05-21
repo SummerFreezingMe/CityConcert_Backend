@@ -7,6 +7,9 @@ import com.cityconcert.repository.EventRepository;
 import com.cityconcert.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,9 +69,11 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<EventDTO> findAll() {
+    public Page<EventDTO> findAll(PageRequest of) {
         log.debug("Request to get all Events");
-        return eventRepository.findAll().stream().map(eventMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+        List<EventDTO> page = eventRepository.findAll(of).stream().map(eventMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new));
+        return new PageImpl<>(page);
     }
 
     @Override
@@ -118,21 +123,27 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDTO> findByName(String name) {
+    public Page<EventDTO> findByName(String name, PageRequest of) {
+
         List<Event> allEvents = eventRepository.findAll();
         allEvents.removeIf(e -> !e.getName().contains(name));
-        return allEvents.stream().map(eventMapper::toDto)
+        List<EventDTO> eventsByName =allEvents.stream().map(eventMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new));
+        final int start = (int)of.getOffset();
+        final int end = Math.min((start + of.getPageSize()), eventsByName.size());
+        return new PageImpl<>(eventsByName.subList(start, end), of, eventsByName.size());
     }
 
     @Override
-    public List<EventDTO> findByFilters(Map<String, Object> filters) {
+    public Page<EventDTO> findByFilters(Map<String, Object> filters, PageRequest of) {
         List<EventDTO> eventsByGenre = findByDescriptor((List<String>) filters.get("genre"));
         List<EventDTO> eventsByDate = findByDate((LocalDateTime) filters.get("date_first"), (LocalDateTime) filters.get("date_last"));
         List<EventDTO> eventsByPrice = findByPrice((Double) filters.get("price_lowest"), (Double) filters.get("price_highest"));
         eventsByGenre.retainAll(eventsByPrice);
         eventsByGenre.retainAll(eventsByDate);
-        return eventsByGenre;
+        final int start = (int)of.getOffset();
+        final int end = Math.min((start + of.getPageSize()), eventsByGenre.size());
+        return new PageImpl<>(eventsByGenre.subList(start, end), of, eventsByGenre.size());
     }
 
 }

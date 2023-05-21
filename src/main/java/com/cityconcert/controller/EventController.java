@@ -4,9 +4,13 @@ import com.cityconcert.domain.dto.EventDTO;
 import com.cityconcert.service.impl.EventServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +34,10 @@ public class EventController {
 
     @GetMapping(value = "/get_all", produces = {"application/json", "application/xml"})
     @Operation(summary = "Отображаем все мероприятия")
-    public List<EventDTO> displayAllEvents() {
-        return esi.findAll();
+
+    public Page<EventDTO> displayAllEvents(@RequestParam(value = "offset", defaultValue = "0") @Min(0) Integer offset,
+                                           @RequestParam(value = "limit", defaultValue = "15") @Min(1) @Max(100) Integer limit) {
+        return esi.findAll(PageRequest.of(offset, limit));
     }
 
 
@@ -47,8 +53,11 @@ public class EventController {
     }
     @GetMapping(value = "/filter_by_name/{name}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Получаем мероприятия по определённому имени")
-    public List<EventDTO> filterEventsByName(@PathVariable String name) {
-        return esi.findByName(name);
+    public Page<EventDTO> filterEventsByName(@PathVariable String name,
+                                             @RequestParam(value = "offset", defaultValue = "0") @Min(0) Integer offset,
+                                             @RequestParam(value = "limit", defaultValue = "15") @Min(1) @Max(100) Integer limit) {
+        return esi.findByName(name,
+                PageRequest.of(offset, limit));
     }
 
     @PostMapping(value = "/filter_by_price", produces = {"application/json", "application/xml"})
@@ -58,7 +67,10 @@ public class EventController {
     }
     @PostMapping(value = "/filter", produces = {"application/json", "application/xml"})
     @Operation(summary = "Получаем мероприятия по всем существующим фильтрам")
-    public List<EventDTO> filterEvents(@RequestBody Map<String,Object> filters) {
-        return esi.findByFilters(filters);
+    public Page<EventDTO> filterEvents(@RequestBody Map<String,Object> filters,
+                                       @RequestParam(value = "offset", defaultValue = "0") @Min(0) Integer offset,
+                                       @RequestParam(value = "limit", defaultValue = "15") @Min(1) @Max(100) Integer limit) {
+        return esi.findByFilters(filters,
+                PageRequest.of(offset, limit));
     }
 }
