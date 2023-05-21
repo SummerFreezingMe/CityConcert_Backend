@@ -120,7 +120,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDTO> findByName(String name) {
         List<Event> allEvents = eventRepository.findAll();
-        allEvents.removeIf(e -> !e.getName().contains(name));
+        allEvents.removeIf(e -> !e.getName().toLowerCase().contains(name.toLowerCase()));
         return allEvents.stream().map(eventMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new));
     }
