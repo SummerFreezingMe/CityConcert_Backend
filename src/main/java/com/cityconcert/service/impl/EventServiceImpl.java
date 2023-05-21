@@ -1,9 +1,12 @@
 package com.cityconcert.service.impl;
 
 import com.cityconcert.domain.Event;
+import com.cityconcert.domain.Ticket;
 import com.cityconcert.domain.dto.EventDTO;
+import com.cityconcert.domain.dto.UserDTO;
 import com.cityconcert.mapper.EventMapper;
 import com.cityconcert.repository.EventRepository;
+import com.cityconcert.repository.TicketRepository;
 import com.cityconcert.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +28,17 @@ public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
 
+    private final TicketRepository ticketRepository;
+
     private final EventMapper eventMapper;
 
-    public EventServiceImpl(EventRepository eventRepository, EventMapper eventMapper) {
+    private final UserServiceImpl userService;
+
+    public EventServiceImpl(EventRepository eventRepository, TicketRepository ticketRepository, EventMapper eventMapper, UserServiceImpl userService) {
         this.eventRepository = eventRepository;
+        this.ticketRepository = ticketRepository;
         this.eventMapper = eventMapper;
+        this.userService = userService;
     }
 
     @Override
@@ -133,6 +142,23 @@ public class EventServiceImpl implements EventService {
         eventsByGenre.retainAll(eventsByPrice);
         eventsByGenre.retainAll(eventsByDate);
         return eventsByGenre;
+    }
+
+    @Override
+    public List<EventDTO> fetchRecommendations() {
+        UserDTO currUser=userService.getCurrentUser();
+        if(currUser==null|| ticketRepository.findByUserId(currUser.getId()).size()==0){
+            return eventRepository.findAll().stream().map(eventMapper::toDto)
+                    .collect(Collectors.toList());
+        }else {
+            List<String> genreDescriptors = new ArrayList<>();
+            List<Ticket> userTickets = ticketRepository.findByUserId(currUser.getId());
+            for (Ticket ticket: userTickets) {
+                Event e = eventRepository.findEventById(ticket.getEventId());
+                genreDescriptors.addAll(new ArrayList<>(Arrays.asList(e.getGenreDescriptors().split(" , "))));
+            }
+            return findByDescriptor(genreDescriptors);
+        }
     }
 
 }
