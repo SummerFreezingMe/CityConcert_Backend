@@ -67,4 +67,6 @@ public interface EventService {
     List<EventDTO> findByName(String name);
 
     List<EventDTO> findByFilters(Map<String, Object> filters);
+
+    List<EventDTO> fetchRecommendations();
 }
