@@ -136,8 +136,7 @@ public class UserServiceImpl implements UserService {
                 getAuthentication().getName());
         User currentUser = userRepository.findByUsername(
                 SecurityContextHolder.getContext().
-                        getAuthentication().getName()).orElseThrow(() ->
-                new UsernameNotFoundException("User not found"));
+                        getAuthentication().getName()).orElse(new User());
         return userMapper.toDto(currentUser);
     }
 
