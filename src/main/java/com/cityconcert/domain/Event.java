@@ -38,7 +38,10 @@ public class Event implements Serializable {
     private LocalDateTime startTime;
 
     @Column(name = "ticket_limit")
-    private Integer ticketLimit;
+    private String ticketLimit;
+
+    @Column(name = "ticket_price")
+    private String ticketPrice;
 
     @Column(name = "genre_descriptors")
     private String genreDescriptors;
