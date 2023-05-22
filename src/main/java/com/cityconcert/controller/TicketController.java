@@ -49,6 +49,11 @@ public class TicketController {
     public List<TicketDTO> TicketsByUser(@PathVariable Long userId) {
         return tsi.ticketsByUser(userId);
     }
+    @GetMapping(value = "/event/{eventId}", produces = {"application/json", "application/xml"})
+    @Operation(summary = "Отображение билетов мероприятия по его Id")
+    public List<TicketDTO> TicketsByEvent(@PathVariable Long eventId) {
+        return tsi.ticketsByEvent(eventId);
+    }
 
     @PostMapping(value = "/exchange", produces = {"application/json", "application/xml"})
     @Operation(summary = "Обмен билетов между пользователями")

@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -101,7 +102,13 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<TicketDTO> ticketsByUser(Long userId) {
         return ticketRepository.findByUserId(userId).stream().map(ticketMapper::toDto)
-                .collect(Collectors.toCollection(LinkedList::new));
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @Override
+    public List<TicketDTO> ticketsByEvent(Long eventId) {
+        return ticketRepository.findByEventId(eventId).stream().map(ticketMapper::toDto)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
