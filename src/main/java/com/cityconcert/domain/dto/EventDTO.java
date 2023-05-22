@@ -18,8 +18,8 @@ public class EventDTO implements Serializable {
 
     private LocalDateTime startTime;
 
-    private Integer ticketLimit;
-
+    private String ticketLimit;
+    private String ticketPrice;
     private EventStatus status;
     private String genreDescriptors;
 
@@ -53,11 +53,11 @@ public class EventDTO implements Serializable {
         this.startTime = startTime;
     }
 
-    public Integer getTicketLimit() {
+        public String getTicketLimit() {
         return ticketLimit;
     }
 
-    public void setTicketLimit(Integer ticketLimit) {
+    public void setTicketLimit(String ticketLimit) {
         this.ticketLimit = ticketLimit;
     }
 
@@ -134,5 +134,13 @@ public class EventDTO implements Serializable {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public String getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public void setTicketPrice(String ticketPrice) {
+        this.ticketPrice = ticketPrice;
     }
 }

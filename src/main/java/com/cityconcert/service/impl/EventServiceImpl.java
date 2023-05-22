@@ -4,6 +4,7 @@ import com.cityconcert.domain.Event;
 import com.cityconcert.domain.Ticket;
 import com.cityconcert.domain.dto.EventDTO;
 import com.cityconcert.domain.dto.UserDTO;
+import com.cityconcert.domain.enumeration.TicketStatus;
 import com.cityconcert.mapper.EventMapper;
 import com.cityconcert.repository.EventRepository;
 import com.cityconcert.repository.TicketRepository;
@@ -34,7 +35,10 @@ public class EventServiceImpl implements EventService {
 
     private final UserServiceImpl userService;
 
-    public EventServiceImpl(EventRepository eventRepository, TicketRepository ticketRepository, EventMapper eventMapper, UserServiceImpl userService) {
+    public EventServiceImpl(EventRepository eventRepository,
+                            TicketRepository ticketRepository,
+                            EventMapper eventMapper,
+                            UserServiceImpl userService) {
         this.eventRepository = eventRepository;
         this.ticketRepository = ticketRepository;
         this.eventMapper = eventMapper;
@@ -45,9 +49,19 @@ public class EventServiceImpl implements EventService {
     public EventDTO save(EventDTO eventDTO) {
         log.debug("Request to save Event : {}", eventDTO);
         Event event = eventMapper.toEntity(eventDTO);
-
         event = eventRepository.save(event);
+        generateTickets(event);
         return eventMapper.toDto(event);
+    }
+
+    private void generateTickets(Event eventDTO) {
+        List<String> ticketsAmount = new ArrayList<>(Arrays.asList(eventDTO.getTicketLimit().split(", ")));
+        List<String> ticketsPrices = new ArrayList<>(Arrays.asList(eventDTO.getTicketLimit().split(", ")));
+        for (int j = 0; j < ticketsAmount.size(); j++) {
+        for (int i = 1; i < Integer.parseInt(ticketsAmount.get(j))+1; i++) {
+            ticketRepository.save(new Ticket(0L, Double.parseDouble(ticketsPrices.get(j)),  "" +((char) (65 + j)) +i, TicketStatus.AVAILABLE,
+                    null,null, eventDTO.getId()));
+        }}
     }
 
     @Override
