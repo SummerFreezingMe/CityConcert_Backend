@@ -32,7 +32,7 @@ public class RequestController {
         return requestService.findAllByType(type);
     }
 
-    @PostMapping(value = "/update", produces = {"application/json", "application/xml"})
+    @PutMapping(value = "/update", produces = {"application/json", "application/xml"})
     @Operation(summary = "Обновляем экземпляр запроса")
     public RequestDTO updateRequest(@RequestBody RequestDTO request) {
         return requestService.update(request);

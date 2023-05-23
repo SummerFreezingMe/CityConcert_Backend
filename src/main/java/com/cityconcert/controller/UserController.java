@@ -24,7 +24,7 @@ public class UserController {
         return usi.save(user);
     }
 
-    @PostMapping(value = "/update/{id}", produces = {"application/json", "application/xml"})
+    @PutMapping(value = "/update/{id}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Обновляем экземпляр пользователя")
     public UserDTO updateUser(@RequestBody UserDTO user) {
         return usi.updateUser(user);
