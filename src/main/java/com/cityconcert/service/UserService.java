@@ -1,5 +1,6 @@
 package com.cityconcert.service;
 
+import com.cityconcert.domain.dto.RegistrationDTO;
 import com.cityconcert.domain.dto.UserDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public interface UserService {
- UserDTO save(UserDTO userDTO);
+ UserDTO save(RegistrationDTO user);
 
     UserDTO getCurrentUser();
 

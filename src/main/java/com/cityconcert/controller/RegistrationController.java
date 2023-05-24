@@ -1,6 +1,6 @@
 package com.cityconcert.controller;
 
-import com.cityconcert.domain.dto.UserDTO;
+import com.cityconcert.domain.dto.RegistrationDTO;
 import com.cityconcert.service.impl.AuthServiceImpl;
 import com.cityconcert.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +19,7 @@ public class RegistrationController {
     }
     @PostMapping("/registration")
     @Operation(summary = "Регистрация нового пользователя")
-    public Object addUser(@RequestBody UserDTO user) {
+    public Object addUser(@RequestBody RegistrationDTO user) {
 
         if (user.getPassword().equals(user.getPasswordConfirm())){
         return userService.save(user);

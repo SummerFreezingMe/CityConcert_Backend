@@ -1,6 +1,7 @@
 package com.cityconcert.service.impl;
 
 import com.cityconcert.domain.User;
+import com.cityconcert.domain.dto.RegistrationDTO;
 import com.cityconcert.domain.dto.UserDTO;
 import com.cityconcert.mapper.UserMapper;
 import com.cityconcert.repository.UserRepository;
@@ -103,7 +104,7 @@ public class UserServiceImpl implements UserService {
                 new UsernameNotFoundException("User not found with id: "+ id))));
     }
 
-    public UserDTO save(UserDTO user) {
+    public UserDTO save(RegistrationDTO user) {
         List<User> existingUsers = userRepository.findAll();
         User newUser = new User();
 
@@ -111,7 +112,7 @@ public class UserServiceImpl implements UserService {
                 passwordEncoder.encode(
                         user.getPassword());
         newUser.setUsername(user.getUsername());
-        newUser.setRole(user.getRole());
+        newUser.setRole("USER");
         newUser.setPassword(encryptedPassword);
         if (user.getEmail() != null) {
             newUser.setEmail(user.getEmail());
@@ -125,7 +126,6 @@ public class UserServiceImpl implements UserService {
                 throw new UsernameAlreadyUsedException();
             }
         }
-        newUser.setImageUrl(user.getImage());
         userRepository.save(newUser);
         return userMapper.toDto(newUser);
     }
