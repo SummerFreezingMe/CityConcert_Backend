@@ -18,11 +18,6 @@ public class UserController {
     public UserController(UserServiceImpl usi) {
         this.usi = usi;
     }
-    @PostMapping(value = "/add", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Добавляем экземпляр пользователя")
-    public UserDTO addUser(@RequestBody UserDTO user) {
-        return usi.save(user);
-    }
 
     @PutMapping(value = "/update/{id}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Обновляем экземпляр пользователя")
