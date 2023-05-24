@@ -54,4 +54,12 @@ public class CustomExceptionHandler  extends ResponseEntityExceptionHandler {
         else response.setMessage("Ticket Not Found");
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
+    @ExceptionHandler(PasswordsNotMatchingException.class)
+    protected ResponseEntity<ResponseDTO> handlePasswordsNotMatchingException(
+            PasswordsNotMatchingException e){
+        ResponseDTO response = new ResponseDTO();
+        if (e.getMessage()!=null) response.setMessage(e.getMessage());
+        else response.setMessage("Passwords doesn't match!");
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 }
