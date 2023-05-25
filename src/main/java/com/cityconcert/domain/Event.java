@@ -57,7 +57,7 @@ public class Event implements Serializable {
     private Long venueId;
 
     @Column(name = "image")
-    private byte[] image;
+    private String image;
 
     @Override
     public boolean equals(Object o) {
