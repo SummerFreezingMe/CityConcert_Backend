@@ -1,10 +1,12 @@
 package com.cityconcert.domain.dto;
 
+import com.cityconcert.domain.model.Venue;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link com.cityconcert.domain.Venue} entity.
+ * A DTO for the {@link Venue} entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class VenueDTO implements Serializable {

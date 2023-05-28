@@ -1,6 +1,6 @@
 package com.cityconcert.mapper;
 
-import com.cityconcert.domain.Request;
+import com.cityconcert.domain.model.Request;
 import com.cityconcert.domain.dto.RequestDTO;
 import org.mapstruct.Mapper;
 

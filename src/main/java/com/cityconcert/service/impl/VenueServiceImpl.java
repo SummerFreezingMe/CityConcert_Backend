@@ -1,6 +1,6 @@
 package com.cityconcert.service.impl;
 
-import com.cityconcert.domain.Venue;
+import com.cityconcert.domain.model.Venue;
 import com.cityconcert.repository.VenueRepository;
 import com.cityconcert.service.VenueService;
 import com.cityconcert.domain.dto.VenueDTO;

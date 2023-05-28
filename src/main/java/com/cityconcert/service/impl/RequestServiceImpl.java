@@ -1,6 +1,6 @@
 package com.cityconcert.service.impl;
 
-import com.cityconcert.domain.Request;
+import com.cityconcert.domain.model.Request;
 import com.cityconcert.domain.dto.RequestDTO;
 import com.cityconcert.domain.enumeration.RequestType;
 import com.cityconcert.mapper.RequestMapper;

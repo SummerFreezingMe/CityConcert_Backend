@@ -1,6 +1,7 @@
 package com.cityconcert.service;
 
 import com.cityconcert.domain.dto.EventDTO;
+import com.cityconcert.domain.model.Event;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link com.cityconcert.domain.Event}.
+ * Service Interface for managing {@link Event}.
  */
 public interface EventService {
     /**

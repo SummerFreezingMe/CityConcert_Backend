@@ -1,6 +1,6 @@
 package com.cityconcert.repository;
 
-import com.cityconcert.domain.Event;
+import com.cityconcert.domain.model.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

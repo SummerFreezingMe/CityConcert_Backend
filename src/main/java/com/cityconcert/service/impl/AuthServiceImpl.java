@@ -1,6 +1,6 @@
 package com.cityconcert.service.impl;
 
-import com.cityconcert.domain.User;
+import com.cityconcert.domain.model.User;
 import com.cityconcert.mapper.UserMapper;
 import com.cityconcert.repository.UserRepository;
 import com.cityconcert.service.AuthService;

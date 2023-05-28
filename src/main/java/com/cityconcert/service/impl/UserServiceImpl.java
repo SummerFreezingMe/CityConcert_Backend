@@ -1,6 +1,6 @@
 package com.cityconcert.service.impl;
 
-import com.cityconcert.domain.User;
+import com.cityconcert.domain.model.User;
 import com.cityconcert.domain.dto.RegistrationDTO;
 import com.cityconcert.domain.dto.UserDTO;
 import com.cityconcert.mapper.UserMapper;

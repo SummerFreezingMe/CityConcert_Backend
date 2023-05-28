@@ -1,13 +1,14 @@
 package com.cityconcert.domain.dto;
 
 import com.cityconcert.domain.enumeration.EventStatus;
+import com.cityconcert.domain.model.Event;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link com.cityconcert.domain.Event} entity.
+ * A DTO for the {@link Event} entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class EventDTO implements Serializable {

@@ -1,7 +1,7 @@
 package com.cityconcert.service.impl;
 
-import com.cityconcert.domain.Event;
-import com.cityconcert.domain.Ticket;
+import com.cityconcert.domain.model.Event;
+import com.cityconcert.domain.model.Ticket;
 import com.cityconcert.domain.dto.EventDTO;
 import com.cityconcert.domain.dto.UserDTO;
 import com.cityconcert.domain.enumeration.TicketStatus;

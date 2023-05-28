@@ -1,4 +1,4 @@
-package com.cityconcert.domain;
+package com.cityconcert.domain.model;
 
 import com.cityconcert.config.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnore;

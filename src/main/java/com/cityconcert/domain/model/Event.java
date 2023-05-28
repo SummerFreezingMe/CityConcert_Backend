@@ -1,4 +1,4 @@
-package com.cityconcert.domain;
+package com.cityconcert.domain.model;
 
 import com.cityconcert.domain.enumeration.EventStatus;
 import lombok.AllArgsConstructor;

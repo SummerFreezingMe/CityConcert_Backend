@@ -1,12 +1,14 @@
 package com.cityconcert.domain.dto;
 
 import com.cityconcert.domain.enumeration.TicketStatus;
+import com.cityconcert.domain.model.Ticket;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link com.cityconcert.domain.Ticket} entity.
+ * A DTO for the {@link Ticket} entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class TicketDTO implements Serializable {
