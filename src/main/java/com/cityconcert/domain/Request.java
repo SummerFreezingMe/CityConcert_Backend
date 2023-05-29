@@ -40,4 +40,8 @@ public class Request {
 
     @Column(name = "wanted_seat")
     String wantedSeat;
+
+    public Request(int i, String s, String s1) {
+
+    }
 }

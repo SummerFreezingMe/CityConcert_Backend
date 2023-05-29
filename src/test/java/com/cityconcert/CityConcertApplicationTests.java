@@ -1,5 +1,6 @@
 package com.cityconcert;
 
+import com.cityconcert.domain.Request;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -8,10 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(classes = CityConcertApplication.class)
 @AutoConfigureMockMvc
@@ -256,10 +261,444 @@ class AdminControllerTests {
                         .contentType(MediaType.APPLICATION_JSON));
     }
 
-	@Test
-	void testGetUsersWithoutPermission() throws Exception {
-		final ResultActions result = mockMvc.perform(get("/admin/users"));
-		result
-				.andExpect(status().isFound());
-	}
+    @Test
+    void testGetUsersWithoutPermission() throws Exception {
+        final ResultActions result = mockMvc.perform(get("/admin/users"));
+        result
+                .andExpect(status().isFound());
+    }
+}
+
+class RegistrationControllerTest {
+    private MockMvc mockMvc;
+
+    @Test
+    void testRegistration() throws Exception {
+        final ResultActions result = mockMvc.perform(post("/registration")
+                .content("{\n" +
+                        " \"id\": 0,\n" +
+                        " \"username\": \"string\",\n" +
+                        " \"email\": \"string\",\n" +
+                        " \"password\": \"string\",\n" +
+                        " \"passwordConfirm\": \"string\",\n" +
+                        " \"role\": \"string\",\n" +
+                        " \"image\": [\n" +
+                        " \"string\"\n" +
+                        " ]\n" +
+                        "}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void testLogin() throws Exception {
+        final ResultActions result = mockMvc.perform(get("/login")
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+}
+
+class UserControllerTest {
+    private MockMvc mockMvc;
+
+    @Test
+    void testAddUser() throws Exception {
+        final ResultActions result = mockMvc.perform(post("/users/add")
+                .content("{\n" +
+                        " \"id\": 0,\n" +
+                        " \"username\": \"string\",\n" +
+                        " \"email\": \"string\",\n" +
+                        " \"password\": \"string\",\n" +
+                        " \"passwordConfirm\": \"string\",\n" +
+                        " \"role\": \"string\",\n" +
+                        " \"image\": [\n" +
+                        " \"string\"\n" +
+                        " ]\n" +
+                        "}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void testGetUserById() throws Exception {
+        final ResultActions result = mockMvc.perform(get("/users/get/{id}", 1)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    @WithMockUser
+    void testGetCurrentUser() throws Exception {
+        final ResultActions result = mockMvc.perform(get("/users/current")
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void testUpdateUser() throws Exception {
+        final ResultActions result = mockMvc.perform(put("/users/update/{id}", 1)
+                .content("{\n" +
+                        " \"id\": 0,\n" +
+                        " \"username\": \"string\",\n" +
+                        " \"email\": \"string\",\n" +
+                        " \"password\": \"string\",\n" +
+                        " \"passwordConfirm\": \"string\",\n" +
+                        " \"role\": \"string\",\n" +
+                        " \"image\": [\n" +
+                        " \"string\"\n" +
+                        " ]\n" +
+                        "}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void testDeleteUser() throws Exception {
+        final ResultActions result = mockMvc.perform(delete("/users/delete/{id}", 1)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+}
+
+class VenueControllerTest {
+    private MockMvc mockMvc;
+
+    @Test
+    void testGetAllVenues() throws Exception {
+        final ResultActions result = mockMvc.perform(get("/venue/get_all")
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(3));
+    }
+
+    @Test
+    void testGetVenueById() throws Exception {
+        final ResultActions result = mockMvc.perform(get("/venue/get/{id}", 1)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Venue 1"))
+                .andExpect(jsonPath("$.address").value("Address 1"));
+    }
+}
+
+class RequestControllerTest {
+    private MockMvc mockMvc;
+
+
+    @Test
+    void testUpdateRequest() throws Exception {
+        final ResultActions result = mockMvc.perform(post("/request/update")
+                .content("{\n" +
+                        " \"userId\": 0,\n" +
+                        " \"eventId\": 0,\n" +
+                        " \"requestType\": \"EXCHANGE\",\n" +
+                        " \"description\": \"string\",\n" +
+                        " \"currentSeat\": \"string\",\n" +
+                        " \"wantedSeat\": \"string\",\n" +
+                        " \"seatFromUser\": \"string\"\n" +
+                        "}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.userId").value(0))
+                .andExpect(jsonPath("$.eventId").value(0))
+                .andExpect(jsonPath("$.requestType").value("EXCHANGE"))
+                .andExpect(jsonPath("$.description").value("string"))
+                .andExpect(jsonPath("$.currentSeat").value("string"))
+                .andExpect(jsonPath("$.wantedSeat").value("string"))
+                .andExpect(jsonPath("$.seatFromUser").value("string"));
+    }
+
+    @Test
+    void testGetAllRequests() throws Exception {
+        final ResultActions result = mockMvc.perform(get("/request/get_all")
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(3));
+    }
+
+    @Test
+    void testGetRequestById() throws Exception {
+        final ResultActions result = mockMvc.perform(get("/request/get/{id}", 1L)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Request 1"))
+                .andExpect(jsonPath("$.description").value("Description 1"));
+    }
+
+    @Test
+    void testDeleteRequestById() throws Exception {
+        final ResultActions result = mockMvc.perform(delete("/request/delete/{id}", 1L)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Request 1"))
+                .andExpect(jsonPath("$.description").value("Description 1"));
+
+        Map<Long, Request> requests = new HashMap<>();
+        requests.put(2L, new Request(2, "Request 2", "Description 2"));
+        requests.put(3L, new Request(3, "Request 3", "Description 3"));
+        mockMvc.perform(get("/request/get/{id}", 1)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json("null"));
+    }
+}
+
+class TicketControllerTest {
+    private MockMvc mockMvc;
+
+    @Test
+    void testSendTicketMail() throws Exception {
+        final ResultActions result = mockMvc.perform(post("/ticket/mail")
+                .content("{\n" +
+                        " \"id\": 0,\n" +
+                        " \"price\": 0,\n" +
+                        " \"seat\": \"string\",\n" +
+                        " \"status\": \"AVAILABLE\",\n" +
+                        " \"purchaseDate\": \"2023-05-20T23:19:09.820Z\",\n" +
+                        " \"userId\": 0,\n" +
+                        " \"eventId\": 0\n" +
+                        "}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(0))
+                .andExpect(jsonPath("$.price").value(0))
+                .andExpect(jsonPath("$.seat").value("string"))
+                .andExpect(jsonPath("$.status").value("AVAILABLE"))
+                .andExpect(jsonPath("$.purchaseDate").value("2023-05-20T23:19:09.820Z"))
+                .andExpect(jsonPath("$.userId").value(0))
+                .andExpect(jsonPath("$.eventId").value(0));
+    }
+
+    @Test
+    void testExchangeTicket() throws Exception {
+        final ResultActions result = mockMvc.perform(post("/ticket/exchange")
+                .content("{\n" +
+                        " \"userId\": 0,\n" +
+                        " \"eventId\": 0,\n" +
+                        " \"requestType\": \"EXCHANGE\",\n" +
+                        " \"description\": \"string\",\n" +
+                        " \"currentSeat\": \"string\",\n" +
+                        " \"wantedSeat\": \"string\",\n" +
+                        " \"seatFromUser\": \"string\"\n" +
+                        "}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.userId").value(0))
+                .andExpect(jsonPath("$.eventId").value(0))
+                .andExpect(jsonPath("$.requestType").value("EXCHANGE"))
+                .andExpect(jsonPath("$.description").value("string"))
+                .andExpect(jsonPath("$.currentSeat").value("string"))
+                .andExpect(jsonPath("$.wantedSeat").value("string"))
+                .andExpect(jsonPath("$.seatFromUser").value("string"));
+    }
+
+    @Test
+    void testAddTicket() throws Exception {
+        final ResultActions result = mockMvc.perform(post("/ticket/add")
+                .content("{\n" +
+                        " \"id\": 0,\n" +
+                        " \"price\": 0,\n" +
+                        " \"seat\": \"string\",\n" +
+                        " \"status\": \"AVAILABLE\",\n" +
+                        " \"purchaseDate\": \"2023-05-20T23:19:51.993Z\",\n" +
+                        " \"userId\": 0,\n" +
+                        " \"eventId\": 0\n" +
+                        "}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(0))
+                .andExpect(jsonPath("$.price").value(0))
+                .andExpect(jsonPath("$.seat").value("string"))
+                .andExpect(jsonPath("$.status").value("AVAILABLE"))
+                .andExpect(jsonPath("$.purchaseDate").value("2023-05-20T23:19:51.993Z"))
+                .andExpect(jsonPath("$.userId").value(0))
+                .andExpect(jsonPath("$.eventId").value(0));
+    }
+
+    @Test
+    void testGetUserTickets() throws Exception {
+        final ResultActions result = mockMvc.perform(get("/ticket/user/{userId}", 1)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].userId").value(1))
+                .andExpect(jsonPath("$[0].eventId").value(2))
+                .andExpect(jsonPath("$[0].seat").value("A1"))
+                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[1].userId").value(1))
+                .andExpect(jsonPath("$[1].eventId").value(3))
+                .andExpect(jsonPath("$[1].seat").value("B2"));
+    }
+
+//    @Test
+//    void testGet
+
+    @Test
+    void testGetTicketById() throws Exception {
+        final ResultActions result = mockMvc.perform(get("/ticket/get/{id}", 1)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.userId").value(1))
+                .andExpect(jsonPath("$.eventId").value(2))
+                .andExpect(jsonPath("$.seat").value("A1"));
+    }
+
+    @Test
+    void testBuyTicket() throws Exception {
+        final ResultActions result = mockMvc.perform(post("/ticket/buy/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.status").value("SOLD"));
+    }
+
+    @Test
+    void testDeleteTicket() throws Exception {
+        final ResultActions result = mockMvc.perform(delete("/ticket/delete/{id}", 1)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Ticket deleted successfully"));
+    }
+}
+
+class EventControllerTest {
+
+    private MockMvc mockMvc;
+
+    public void TicketControllerTest() {
+
+        mockMvc = MockMvcBuilders.standaloneSetup(new EventControllerTest()).build();
+    }
+
+
+    @Test
+    void testFilterEventsByPrice() throws Exception {
+        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/event/filter_by_price")
+                .param("minPrice", "0")
+                .param("maxPrice", "0")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+
+    @Test
+    void testFilterEventsByGenre() throws Exception {
+        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/event/filter_by_genre")
+                .content("[\"string\"]")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void testFilterEventsByDate() throws Exception {
+        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/event/filter_by_date")
+                .content("{ \"additionalProp1\": \"2023-05-20T23:33:40.407Z\", \"additionalProp2\": \"2023-05-20T23:33:40.407Z\", \"additionalProp3\": \"2023-05-20T23:33:40.407Z\" }")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void testFilterEvents() throws Exception {
+        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post("/event/filter")
+                .content("{ \"additionalProp1\": {}, \"additionalProp2\": {}, \"additionalProp3\": {} }")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void testGetAllEvents() throws Exception {
+        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/event/get_all")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void testGetEventById() throws Exception {
+        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/event/get/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void testFilterEventsByName() throws Exception {
+        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/event/filter_by_name/{name}", "concert")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
 }
