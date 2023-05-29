@@ -1,6 +1,10 @@
 package com.cityconcert.domain.dto;
 
 import com.cityconcert.domain.model.Venue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -9,6 +13,10 @@ import java.util.Objects;
  * A DTO for the {@link Venue} entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class VenueDTO implements Serializable {
 
     private Long id;
@@ -21,50 +29,7 @@ public class VenueDTO implements Serializable {
 
     private Integer capacity;
 
-    private byte[] image;
-
-    public VenueDTO() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
+    private String image;
 
     @Override
     public boolean equals(Object o) {
@@ -97,13 +62,5 @@ public class VenueDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", capacity=" + getCapacity() +
             "}";
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 }

@@ -41,62 +41,8 @@ public class Venue implements Serializable {
     private Integer capacity;
 
     @Column(name = "image")
-    private byte[] image;
+    private String image;
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public Venue id(Long id) {
-        this.setId(id);
-        return this;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public Venue name(String name) {
-        this.setName(name);
-        return this;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLocation() {
-        return this.location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public Venue description(String description) {
-        this.setDescription(description);
-        return this;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getCapacity() {
-        return this.capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -111,11 +57,9 @@ public class Venue implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-        return getClass().hashCode();
+         return getClass().hashCode();
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
         return "Venue{" +
@@ -125,13 +69,5 @@ public class Venue implements Serializable {
             ", description='" + getDescription() + "'" +
             ", capacity=" + getCapacity() +
             "}";
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 }
