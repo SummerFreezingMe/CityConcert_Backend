@@ -1,4 +1,4 @@
-package com.cityconcert.service;
+package com.cityconcert.service.exceptions;
 
 public class EmailAlreadyUsedException extends RuntimeException {
 

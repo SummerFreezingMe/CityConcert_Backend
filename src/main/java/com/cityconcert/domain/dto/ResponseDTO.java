@@ -1,4 +1,4 @@
-package com.cityconcert.domain;
+package com.cityconcert.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,4 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class AbstractRequest  {}
+public class ResponseDTO {
+    private String message;
+    }

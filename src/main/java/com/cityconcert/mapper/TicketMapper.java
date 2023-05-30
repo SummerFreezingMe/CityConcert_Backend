@@ -1,12 +1,8 @@
 package com.cityconcert.mapper;
 
-import com.cityconcert.domain.Event;
-import com.cityconcert.domain.Ticket;
-import com.cityconcert.domain.User;
-import com.cityconcert.domain.dto.EventDTO;
+import com.cityconcert.domain.model.Ticket;
 import com.cityconcert.domain.dto.TicketDTO;
-import com.cityconcert.domain.dto.UserDTO;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
 
 /**
  * Mapper for the entity {@link Ticket} and its DTO {@link TicketDTO}.

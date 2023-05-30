@@ -2,31 +2,29 @@ package com.cityconcert.controller;
 
 import com.cityconcert.domain.dto.VenueDTO;
 import com.cityconcert.service.impl.VenueServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping(value = "venue")
+@Tag(name="Площадки",description = "Методы, взаимодействующие с площадками, на которых проводятся мероприятия ")
+@RequestMapping(value = "/venue")
 public class VenueController {
-
-    private final VenueServiceImpl vsi;
-
+    private final VenueServiceImpl venueService;
     public VenueController(VenueServiceImpl vsi) {
-        this.vsi = vsi;
+        this.venueService = vsi;
     }
-
-    @PostMapping(value = "/add", produces = {"application/json", "application/xml"})
-    public VenueDTO addVenue(@RequestBody VenueDTO venue) {
-        return vsi.save(venue);
-    }
-
     @GetMapping(value = "/get/{id}", produces = {"application/json", "application/xml"})
+    @Operation(summary = "Возвращаем экземпляр площадки по его Id")
     public VenueDTO getVenue(@PathVariable Long id) {
-        return vsi.findOne(id).get();
+        return venueService.findOne(id);
     }
 
-    @DeleteMapping(value = "/delete/{id}",
-            produces = {"application/json", "application/xml"})
-    public void deleteVenue(@PathVariable Long id) {
-       vsi.delete(id);
+    @GetMapping(value = "/get_all", produces = {"application/json", "application/xml"})
+    @Operation(summary = "Возвращаем список всех площадок")
+    public List<VenueDTO> getVenues() {
+        return venueService.findAll();
     }
 }

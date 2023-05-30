@@ -1,6 +1,6 @@
-package com.cityconcert.service;
+package com.cityconcert.service.mail;
 
-import com.cityconcert.domain.User;
+import com.cityconcert.domain.model.User;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import javax.mail.MessagingException;
@@ -28,11 +28,8 @@ public class MailService {
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
     private static final String USER = "user";
-
-    private static final String BASE_URL = "baseUrl";
-
+    
     private static final String AUTHOR = "CityConcert@mail.ru";
-
 
     private final JavaMailSender javaMailSender;
 
@@ -40,13 +37,10 @@ public class MailService {
 
     private final SpringTemplateEngine templateEngine;
 
-    public MailService(
-        JavaMailSender javaMailSender,
-        MessageSource messageSource,
+    public MailService(JavaMailSender javaMailSender, MessageSource messageSource,
         SpringTemplateEngine templateEngine) {
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
-
         this.templateEngine = templateEngine;
     }
 
@@ -60,8 +54,6 @@ public class MailService {
             subject,
             content
         );
-
-        // Prepare message using a Spring helper
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, StandardCharsets.UTF_8.name());
@@ -85,7 +77,6 @@ public class MailService {
         Locale locale = Locale.ENGLISH;
         Context context = new Context(locale);
         context.setVariable(USER, user);
-       // context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
@@ -95,12 +86,6 @@ public class MailService {
     public void sendActivationEmail(User user) {
         log.debug("Sending activation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/activationEmail", "email.activation.title");
-    }
-
-    @Async
-    public void sendCreationEmail(User user) {
-        log.debug("Sending creation email to '{}'", user.getEmail());
-        sendEmailFromTemplate(user, "mail/creationEmail", "email.activation.title");
     }
 
     @Async

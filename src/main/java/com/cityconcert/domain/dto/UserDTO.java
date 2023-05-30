@@ -1,51 +1,43 @@
 package com.cityconcert.domain.dto;
 
-import com.cityconcert.domain.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
  * A DTO representing a user, with only the public attributes.
  */
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
     private Long id;
+    private String username;
 
-    private String login;
+    private String email;
+    private String password;
 
-    public UserDTO() {
-        // Empty constructor needed for Jackson.
-    }
+    private String passwordConfirm;
 
-    public UserDTO(User user) {
-        this.id = user.getId();
-        // Customize it here if you need, or not, firstName/lastName/etc
-        this.login = user.getUsername();
-    }
+    private String role;
 
-    public Long getId() {
-        return id;
-    }
+    private byte[] image;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    // prettier-ignore
     @Override
     public String toString() {
         return "UserDTO{" +
-            "id='" + id + '\'' +
-            ", login='" + login + '\'' +
-            "}";
+                ", login='" + username + '\'' +
+                ", password='" + password + '\'' +
+                "}";
     }
+
+
 }

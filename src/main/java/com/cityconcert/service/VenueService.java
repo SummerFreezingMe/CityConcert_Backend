@@ -1,11 +1,13 @@
 package com.cityconcert.service;
 
 import com.cityconcert.domain.dto.VenueDTO;
+import com.cityconcert.domain.model.Venue;
+
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link com.cityconcert.domain.Venue}.
+ * Service Interface for managing {@link Venue}.
  */
 public interface VenueService {
     /**
@@ -45,7 +47,7 @@ public interface VenueService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<VenueDTO> findOne(Long id);
+   VenueDTO findOne(Long id);
 
     /**
      * Delete the "id" venue.
