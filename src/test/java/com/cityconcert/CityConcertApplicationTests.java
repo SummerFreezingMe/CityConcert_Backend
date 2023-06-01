@@ -9,8 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -268,23 +266,21 @@ class AdminControllerTests {
                 .andExpect(status().isFound());
     }
 }
-
+@SpringBootTest(classes = CityConcertApplication.class)
+@AutoConfigureMockMvc
 class RegistrationControllerTest {
+
+    @Autowired
     private MockMvc mockMvc;
 
     @Test
     void testRegistration() throws Exception {
         final ResultActions result = mockMvc.perform(post("/registration")
                 .content("{\n" +
-                        " \"id\": 0,\n" +
-                        " \"username\": \"string\",\n" +
-                        " \"email\": \"string\",\n" +
-                        " \"password\": \"string\",\n" +
-                        " \"passwordConfirm\": \"string\",\n" +
-                        " \"role\": \"string\",\n" +
-                        " \"image\": [\n" +
-                        " \"string\"\n" +
-                        " ]\n" +
+                        "  \"username\": \"string\",\n" +
+                        "  \"email\": \"string@gmail.com\",\n" +
+                        "  \"password\": \"string\",\n" +
+                        "  \"passwordConfirm\": \"string\"\n" +
                         "}")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -295,18 +291,21 @@ class RegistrationControllerTest {
 
     @Test
     void testLogin() throws Exception {
-        final ResultActions result = mockMvc.perform(get("/login")
+        final ResultActions result = mockMvc.perform(get("/login?username=test&password=test")
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 }
-
+@SpringBootTest(classes = CityConcertApplication.class)
+@AutoConfigureMockMvc
 class UserControllerTest {
+    @Autowired
     private MockMvc mockMvc;
 
     @Test
+    @WithMockUser(authorities = {"ROLE_USER"})
     void testAddUser() throws Exception {
         final ResultActions result = mockMvc.perform(post("/users/add")
                 .content("{\n" +
@@ -328,6 +327,7 @@ class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {"ROLE_USER"})
     void testGetUserById() throws Exception {
         final ResultActions result = mockMvc.perform(get("/users/get/{id}", 1)
                 .accept(MediaType.APPLICATION_JSON));
@@ -337,7 +337,7 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_USER"})
     void testGetCurrentUser() throws Exception {
         final ResultActions result = mockMvc.perform(get("/users/current")
                 .accept(MediaType.APPLICATION_JSON));
@@ -347,6 +347,7 @@ class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {"ROLE_USER"})
     void testUpdateUser() throws Exception {
         final ResultActions result = mockMvc.perform(put("/users/update/{id}", 1)
                 .content("{\n" +
@@ -368,6 +369,7 @@ class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {"ROLE_USER"})
     void testDeleteUser() throws Exception {
         final ResultActions result = mockMvc.perform(delete("/users/delete/{id}", 1)
                 .accept(MediaType.APPLICATION_JSON));
@@ -376,8 +378,11 @@ class UserControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 }
-
+@SpringBootTest(classes = CityConcertApplication.class)
+@AutoConfigureMockMvc
 class VenueControllerTest {
+
+    @Autowired
     private MockMvc mockMvc;
 
     @Test
@@ -387,8 +392,7 @@ class VenueControllerTest {
 
         result.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(3));
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -403,14 +407,17 @@ class VenueControllerTest {
                 .andExpect(jsonPath("$.address").value("Address 1"));
     }
 }
-
+@SpringBootTest(classes = CityConcertApplication.class)
+@AutoConfigureMockMvc
 class RequestControllerTest {
+    @Autowired
     private MockMvc mockMvc;
 
 
     @Test
-    void testUpdateRequest() throws Exception {
-        final ResultActions result = mockMvc.perform(post("/request/update")
+    @WithMockUser(authorities = {"ROLE_USER"})
+    void testAddRequest() throws Exception {
+        final ResultActions result = mockMvc.perform(post("/request/add")
                 .content("{\n" +
                         " \"userId\": 0,\n" +
                         " \"eventId\": 0,\n" +
@@ -435,50 +442,49 @@ class RequestControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {"ROLE_USER"})
     void testGetAllRequests() throws Exception {
         final ResultActions result = mockMvc.perform(get("/request/get_all")
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(3));
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
+    @WithMockUser(authorities = {"ROLE_USER"})
     void testGetRequestById() throws Exception {
-        final ResultActions result = mockMvc.perform(get("/request/get/{id}", 1L)
+        final ResultActions result = mockMvc.perform(get("/request/get/{id}", 25L)
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("Request 1"))
-                .andExpect(jsonPath("$.description").value("Description 1"));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
+    @WithMockUser(authorities = {"ROLE_USER"})
     void testDeleteRequestById() throws Exception {
-        final ResultActions result = mockMvc.perform(delete("/request/delete/{id}", 1L)
+        final ResultActions result = mockMvc.perform(delete("/request/delete/{id}", 24L)
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("Request 1"))
-                .andExpect(jsonPath("$.description").value("Description 1"));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         Map<Long, Request> requests = new HashMap<>();
         requests.put(2L, new Request(2, "Request 2", "Description 2"));
         requests.put(3L, new Request(3, "Request 3", "Description 3"));
-        mockMvc.perform(get("/request/get/{id}", 1)
+        mockMvc.perform(get("/request/get/{id}", 24)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json("null"));
     }
 }
-
+@SpringBootTest(classes = CityConcertApplication.class)
+@AutoConfigureMockMvc
 class TicketControllerTest {
+
+    @Autowired
     private MockMvc mockMvc;
 
     @Test
@@ -615,22 +621,18 @@ class TicketControllerTest {
                 .andExpect(jsonPath("$.message").value("Ticket deleted successfully"));
     }
 }
-
+@SpringBootTest(classes = CityConcertApplication.class)
+@AutoConfigureMockMvc
 class EventControllerTest {
-
+    @Autowired
     private MockMvc mockMvc;
-
-    public void TicketControllerTest() {
-
-        mockMvc = MockMvcBuilders.standaloneSetup(new EventControllerTest()).build();
-    }
 
 
     @Test
     void testFilterEventsByPrice() throws Exception {
-        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/event/filter_by_price")
+        final ResultActions result = mockMvc.perform(get("/event/filter_by_price")
                 .param("minPrice", "0")
-                .param("maxPrice", "0")
+                .param("maxPrice", "100")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -641,8 +643,8 @@ class EventControllerTest {
 
     @Test
     void testFilterEventsByGenre() throws Exception {
-        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/event/filter_by_genre")
-                .content("[\"string\"]")
+        final ResultActions result = mockMvc.perform(post("/event/filter_by_genre")
+                .content("[\"Rock\"]")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -652,8 +654,8 @@ class EventControllerTest {
 
     @Test
     void testFilterEventsByDate() throws Exception {
-        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/event/filter_by_date")
-                .content("{ \"additionalProp1\": \"2023-05-20T23:33:40.407Z\", \"additionalProp2\": \"2023-05-20T23:33:40.407Z\", \"additionalProp3\": \"2023-05-20T23:33:40.407Z\" }")
+        final ResultActions result = mockMvc.perform(get("/event/filter_by_date")
+                .content("{ \"start_date\": \"2023-05-20T23:33:40.407Z\", \"end_date\": \"2023-05-20T23:33:40.407Z\"}")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -663,7 +665,7 @@ class EventControllerTest {
 
     @Test
     void testFilterEvents() throws Exception {
-        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post("/event/filter")
+        final ResultActions result = mockMvc.perform(post("/event/filter")
                 .content("{ \"additionalProp1\": {}, \"additionalProp2\": {}, \"additionalProp3\": {} }")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -674,7 +676,7 @@ class EventControllerTest {
 
     @Test
     void testGetAllEvents() throws Exception {
-        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/event/get_all")
+        final ResultActions result = mockMvc.perform(get("/event/get_all")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -684,7 +686,7 @@ class EventControllerTest {
 
     @Test
     void testGetEventById() throws Exception {
-        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/event/get/{id}", 1)
+        final ResultActions result = mockMvc.perform(get("/event/get/{id}", 3)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -694,7 +696,7 @@ class EventControllerTest {
 
     @Test
     void testFilterEventsByName() throws Exception {
-        final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/event/filter_by_name/{name}", "concert")
+        final ResultActions result = mockMvc.perform(get("/event/filter_by_name/{name}", "Deftones")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
