@@ -1,11 +1,11 @@
 package com.cityconcert.repository;
 
-import com.cityconcert.domain.Ticket;
+import com.cityconcert.domain.model.Ticket;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.data.jpa.repository.*;
-import org.springframework.stereotype.Repository;
 
 /**
  * Spring Data JPA repository for the Ticket entity.
@@ -16,4 +16,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     List<Ticket> findByUserId(Long userId);
 
  Optional<Ticket>  findBySeatAndUserId(String currentSeat, Long userId);
+
+    List<Ticket> findByEventId(Long eventId);
 }

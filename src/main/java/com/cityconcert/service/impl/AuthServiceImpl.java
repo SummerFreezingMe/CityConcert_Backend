@@ -1,6 +1,6 @@
 package com.cityconcert.service.impl;
 
-import com.cityconcert.domain.User;
+import com.cityconcert.domain.model.User;
 import com.cityconcert.mapper.UserMapper;
 import com.cityconcert.repository.UserRepository;
 import com.cityconcert.service.AuthService;
@@ -14,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -21,12 +22,13 @@ import java.util.Set;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
 
-    public AuthServiceImpl(UserRepository userRepository, UserMapper userMapper, @Lazy AuthenticationManager authenticationManager) {
+    public AuthServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, UserMapper userMapper, @Lazy AuthenticationManager authenticationManager) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.authenticationManager = authenticationManager;
@@ -36,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
     public Object login(String login, String password) {
         User user = userRepository.findByUsername(login).orElseThrow(() ->
                 new UsernameNotFoundException("User not found with username: "+ login));
-        if (password.equals(user.getPassword())) {
+        if (passwordEncoder.matches(password,user.getPassword())) {
             Authentication authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),password));
             SecurityContextHolder.getContext().setAuthentication(authentication);

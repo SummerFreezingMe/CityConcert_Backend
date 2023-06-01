@@ -1,15 +1,24 @@
 package com.cityconcert.domain.dto;
 
 import com.cityconcert.domain.enumeration.EventStatus;
+import com.cityconcert.domain.model.Event;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link com.cityconcert.domain.Event} entity.
+ * A DTO for the {@link Event} entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class EventDTO implements Serializable {
 
     private Long id;
@@ -18,64 +27,20 @@ public class EventDTO implements Serializable {
 
     private LocalDateTime startTime;
 
-    private Integer ticketLimit;
+    private String ticketLimit;
+
+    private String ticketPrice;
 
     private EventStatus status;
+
     private String genreDescriptors;
 
-    private byte[] image;
+    private String image;
+
     private String description;
+
     private Long venue_id;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public Integer getTicketLimit() {
-        return ticketLimit;
-    }
-
-    public void setTicketLimit(Integer ticketLimit) {
-        this.ticketLimit = ticketLimit;
-    }
-
-    public EventStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(EventStatus status) {
-        this.status = status;
-    }
-
-    public Long getVenue() {
-        return venue_id;
-    }
-
-    public void setVenue(Long venue) {
-        this.venue_id = venue;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -103,36 +68,13 @@ public class EventDTO implements Serializable {
     public String toString() {
         return "EventDTO{" +
             "id=" + getId() +
-
             ", name='" + getName() + "'" +
             ", startTime='" + getStartTime() + "'" +
             ", ticketLimit=" + getTicketLimit() +
             ", status='" + getStatus() + "'" +
-            ", venue=" + getVenue() +
+            ", venue=" + getVenue_id() +
             "}";
     }
 
-    public String getGenreDescriptors() {
-        return genreDescriptors;
-    }
 
-    public void setGenreDescriptors(String genreDescriptors) {
-        this.genreDescriptors = genreDescriptors;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
 }

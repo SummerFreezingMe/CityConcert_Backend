@@ -1,7 +1,11 @@
-package com.cityconcert.domain;
+package com.cityconcert.domain.model;
 
 import com.cityconcert.config.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -10,15 +14,17 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Locale;
 
 /**
  * A user.
  */
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name="app_user")
+@Table(name = "app_user")
 public class User
-       // extends AbstractAuditingEntity<Long>
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,8 +48,9 @@ public class User
 
 
     @Email
+    @Pattern(regexp = Constants.MAIL_REGEX)
     @Size(min = 5, max = 254)
-    @Column(name = "email",length = 254, unique = true)
+    @Column(name = "email", length = 254, unique = true)
     private String email;
 
     @Transient
@@ -56,60 +63,6 @@ public class User
 
     @Column(name = "image", length = 256)
     private byte[] imageUrl;
-
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    // Lowercase the login before saving it in database
-    public void setUsername(String login) {
-        this.username = login.toLowerCase(Locale.ENGLISH);
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public byte[] getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(byte[] imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public boolean isActivated() {
-        return activated;
-    }
-
-    public void setActivated(boolean activated) {
-        this.activated = activated;
-    }
-
-
 
     @Override
     public boolean equals(Object o) {
@@ -132,11 +85,11 @@ public class User
     @Override
     public String toString() {
         return "User{" +
-            "login='" + username + '\'' +
-            ", email='" + email + '\'' +
-            ", imageUrl='" + Arrays.toString(imageUrl) + '\'' +
-            ", activated='" + activated + '\'' +
-            "}";
+                "login='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", imageUrl='" + Arrays.toString(imageUrl) + '\'' +
+                ", activated='" + activated + '\'' +
+                "}";
     }
 
     public String getPasswordConfirm() {

@@ -2,11 +2,13 @@ package com.cityconcert.service;
 
 import com.cityconcert.domain.dto.RequestDTO;
 import com.cityconcert.domain.dto.TicketDTO;
+import com.cityconcert.domain.model.Ticket;
+
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link com.cityconcert.domain.Ticket}.
+ * Service Interface for managing {@link Ticket}.
  */
 public interface TicketService {
     /**
@@ -56,6 +58,8 @@ public interface TicketService {
     void delete(Long id);
 
     List<TicketDTO> ticketsByUser(Long userId);
+
+    List<TicketDTO> ticketsByEvent(Long eventId);
 
     TicketDTO exchangeTickets(RequestDTO exchangeRequest);
 

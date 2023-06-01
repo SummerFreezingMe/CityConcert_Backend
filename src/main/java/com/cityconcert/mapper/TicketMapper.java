@@ -1,6 +1,6 @@
 package com.cityconcert.mapper;
 
-import com.cityconcert.domain.Ticket;
+import com.cityconcert.domain.model.Ticket;
 import com.cityconcert.domain.dto.TicketDTO;
 import org.mapstruct.Mapper;
 

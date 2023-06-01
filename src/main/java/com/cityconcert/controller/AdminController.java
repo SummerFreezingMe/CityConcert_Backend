@@ -40,7 +40,7 @@ public class AdminController {
         return eventService.save(event);
     }
 
-    @PostMapping(value = "/event/update", produces = {"application/json", "application/xml"})
+    @PutMapping(value = "/event/update", produces = {"application/json", "application/xml"})
     @Operation(summary = "Изменяем существующее мероприятие")
     public EventDTO updateEvent(@RequestBody EventDTO event) {
         return eventService.update(event);
@@ -65,7 +65,7 @@ public class AdminController {
         venueService.delete(id);
     }
 
-    @PostMapping(value = "/venue/update", produces = {"application/json", "application/xml"})
+    @PutMapping(value = "/venue/update", produces = {"application/json", "application/xml"})
     @Operation(summary = "Обновление площадки")
     public VenueDTO updateVenue(@RequestBody VenueDTO venue) {
         return venueService.update(venue);
