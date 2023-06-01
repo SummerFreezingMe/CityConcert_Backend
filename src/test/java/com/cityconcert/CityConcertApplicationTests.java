@@ -467,13 +467,8 @@ class RequestControllerTest {
     void testDeleteRequestById() throws Exception {
         final ResultActions result = mockMvc.perform(delete("/request/delete/{id}", 24L)
                 .accept(MediaType.APPLICATION_JSON));
-
         result.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-        Map<Long, Request> requests = new HashMap<>();
-        requests.put(2L, new Request(2, "Request 2", "Description 2"));
-        requests.put(3L, new Request(3, "Request 3", "Description 3"));
         mockMvc.perform(get("/request/get/{id}", 24)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
