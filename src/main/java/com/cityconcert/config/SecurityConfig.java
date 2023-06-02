@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 @Configuration
 @EnableWebSecurity
 
@@ -17,7 +19,6 @@ public class SecurityConfig   {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**","/request/**").hasRole("USER")
                 .anyRequest().permitAll()
         .and()
                 .formLogin()
@@ -25,7 +26,7 @@ public class SecurityConfig   {
                 .defaultSuccessUrl("/")
                 .permitAll()
                 .and()
-                .logout()
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .permitAll()
                 .logoutSuccessUrl("/");
         return http.build();
