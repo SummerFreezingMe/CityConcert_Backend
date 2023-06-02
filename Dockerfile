@@ -6,4 +6,3 @@ RUN mvn clean package -DskipTests
 FROM openjdk:8-jdk-alpine
 COPY --from=builder target/CityConcert-0.0.1-SNAPSHOT.jar application.jar
 ENTRYPOINT ["java", "-jar", "application.jar"]
-EXPOSE 8080
