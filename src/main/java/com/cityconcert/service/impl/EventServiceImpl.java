@@ -57,10 +57,13 @@ public class EventServiceImpl implements EventService {
     private void generateTickets(Event eventDTO) {
         List<String> ticketsAmount = new ArrayList<>(Arrays.asList(eventDTO.getTicketLimit().split(", ")));
         List<String> ticketsPrices = new ArrayList<>(Arrays.asList(eventDTO.getTicketLimit().split(", ")));
+        long idCounter = eventRepository.findAll().size()*1000L;
         for (int j = 0; j < ticketsAmount.size(); j++) {
         for (int i = 1; i < Integer.parseInt(ticketsAmount.get(j))+1; i++) {
-            ticketRepository.save(new Ticket(0L, Double.parseDouble(ticketsPrices.get(j)),  "" +((char) (65 + j)) +i, TicketStatus.AVAILABLE,
+            ticketRepository.save(new Ticket(idCounter, Double.parseDouble(ticketsPrices.get(j)),
+                    "" +((char) (65 + j)) +i, TicketStatus.AVAILABLE,
                     null,null, eventDTO.getId()));
+            idCounter++;
         }}
     }
 
