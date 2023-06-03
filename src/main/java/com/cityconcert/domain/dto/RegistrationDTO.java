@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+/**
+ * A DTO for the Registration.
+ */
+@SuppressWarnings("common-java:DuplicatedBlocks")
 @Getter
 @Setter
 @AllArgsConstructor

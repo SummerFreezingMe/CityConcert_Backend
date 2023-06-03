@@ -10,55 +10,57 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
-public class CustomExceptionHandler  extends ResponseEntityExceptionHandler {
+public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    protected ResponseEntity<ResponseDTO> handleEntityNotFoundException(EntityNotFoundException notFoundException){
+    protected ResponseEntity<ResponseDTO> handleEntityNotFoundException(EntityNotFoundException notFoundException) {
 
         ResponseDTO response = new ResponseDTO();
-        if (notFoundException.getMessage()!=null) response.setMessage(notFoundException.getMessage());
+        if (notFoundException.getMessage() != null) response.setMessage(notFoundException.getMessage());
         else response.setMessage("Entity Not Found");
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(EmailAlreadyUsedException.class)
-    protected ResponseEntity<ResponseDTO> handleEmailAlreadyUsedException(EmailAlreadyUsedException e){
+    protected ResponseEntity<ResponseDTO> handleEmailAlreadyUsedException(EmailAlreadyUsedException e) {
         ResponseDTO response = new ResponseDTO();
-        if (e.getMessage()!=null) response.setMessage(e.getMessage());
+        if (e.getMessage() != null) response.setMessage(e.getMessage());
         else response.setMessage("Authorization error: Email is already in use!");
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
     protected ResponseEntity<ResponseDTO> handleInvalidPasswordException(
-            InvalidPasswordException e){
+            InvalidPasswordException e) {
         ResponseDTO response = new ResponseDTO();
-        if (e.getMessage()!=null) response.setMessage(e.getMessage());
+        if (e.getMessage() != null) response.setMessage(e.getMessage());
         else response.setMessage("Authorization error: Incorrect password!");
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UsernameAlreadyUsedException.class)
     protected ResponseEntity<ResponseDTO> handleUsernameAlreadyUsedException(
-            UsernameAlreadyUsedException e){
+            UsernameAlreadyUsedException e) {
         ResponseDTO response = new ResponseDTO();
-        if (e.getMessage()!=null) response.setMessage(e.getMessage());
+        if (e.getMessage() != null) response.setMessage(e.getMessage());
         else response.setMessage("Authorization error: Login name already used!");
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
+
     @ExceptionHandler(TicketNotFoundException.class)
     protected ResponseEntity<ResponseDTO> handleTicketNotFoundException(
-            TicketNotFoundException e){
+            TicketNotFoundException e) {
         ResponseDTO response = new ResponseDTO();
-        if (e.getMessage()!=null) response.setMessage(e.getMessage());
+        if (e.getMessage() != null) response.setMessage(e.getMessage());
         else response.setMessage("Ticket Not Found");
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
+
     @ExceptionHandler(PasswordsNotMatchingException.class)
     protected ResponseEntity<ResponseDTO> handlePasswordsNotMatchingException(
-            PasswordsNotMatchingException e){
+            PasswordsNotMatchingException e) {
         ResponseDTO response = new ResponseDTO();
-        if (e.getMessage()!=null) response.setMessage(e.getMessage());
+        if (e.getMessage() != null) response.setMessage(e.getMessage());
         else response.setMessage("Passwords doesn't match!");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }

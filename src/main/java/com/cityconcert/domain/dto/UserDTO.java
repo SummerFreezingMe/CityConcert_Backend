@@ -10,6 +10,8 @@ import java.io.Serializable;
 /**
  * A DTO representing a user, with only the public attributes.
  */
+
+@SuppressWarnings("common-java:DuplicatedBlocks")
 @Getter
 @Setter
 @AllArgsConstructor

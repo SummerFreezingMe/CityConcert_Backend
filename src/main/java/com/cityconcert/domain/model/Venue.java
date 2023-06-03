@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * A Venue.
@@ -57,17 +57,17 @@ public class Venue implements Serializable {
 
     @Override
     public int hashCode() {
-         return getClass().hashCode();
+        return getClass().hashCode();
     }
 
     @Override
     public String toString() {
         return "Venue{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", location='" + getLocation() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", capacity=" + getCapacity() +
-            "}";
+                "id=" + getId() +
+                ", name='" + getName() + "'" +
+                ", location='" + getLocation() + "'" +
+                ", description='" + getDescription() + "'" +
+                ", capacity=" + getCapacity() +
+                "}";
     }
 }

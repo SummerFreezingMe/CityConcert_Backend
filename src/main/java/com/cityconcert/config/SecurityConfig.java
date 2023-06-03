@@ -11,16 +11,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * Spring Security Configuration.
+ */
+
 @Configuration
 @EnableWebSecurity
-
-public class SecurityConfig   {
+public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
-        .and()
+                .and()
                 .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/")
@@ -36,6 +38,7 @@ public class SecurityConfig   {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

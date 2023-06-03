@@ -1,10 +1,10 @@
 package com.cityconcert.service.impl;
 
-import com.cityconcert.domain.model.Ticket;
 import com.cityconcert.domain.dto.EventDTO;
 import com.cityconcert.domain.dto.RequestDTO;
 import com.cityconcert.domain.dto.TicketDTO;
 import com.cityconcert.domain.enumeration.TicketStatus;
+import com.cityconcert.domain.model.Ticket;
 import com.cityconcert.mapper.TicketMapper;
 import com.cityconcert.repository.TicketRepository;
 import com.cityconcert.service.TicketService;
@@ -141,12 +141,13 @@ public class TicketServiceImpl implements TicketService {
 
     public TicketDTO buyTicket(Long id) {
         Ticket boughtTicket = ticketRepository.findById(id).orElseThrow(TicketNotFoundException::new);
-            boughtTicket.setStatus(TicketStatus.SOLD);
-            if (userService.getCurrentUser() != null) {
-                boughtTicket.setUserId(userService.getCurrentUser().getId());
-            } else{
-                boughtTicket.setUserId(0L);}
-            ticketRepository.save(boughtTicket);
+        boughtTicket.setStatus(TicketStatus.SOLD);
+        if (userService.getCurrentUser() != null) {
+            boughtTicket.setUserId(userService.getCurrentUser().getId());
+        } else {
+            boughtTicket.setUserId(0L);
+        }
+        ticketRepository.save(boughtTicket);
         return ticketMapper.toDto(boughtTicket);
     }
 }

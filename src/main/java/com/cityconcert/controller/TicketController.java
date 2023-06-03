@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Tag(name="Билеты",description = "Методы, взаимодействующие с билетами")
+@Tag(name = "Билеты", description = "Методы, взаимодействующие с билетами")
 @RequestMapping(value = "/ticket")
 public class TicketController {
     private final TicketServiceImpl tsi;
@@ -19,6 +19,7 @@ public class TicketController {
     public TicketController(TicketServiceImpl tsi) {
         this.tsi = tsi;
     }
+
     @PostMapping(value = "/add", produces = {"application/json", "application/xml"})
     @Operation(summary = "Добавляем экземпляр билета")
     public TicketDTO addTicket(@RequestBody TicketDTO ticket) {
@@ -49,6 +50,7 @@ public class TicketController {
     public List<TicketDTO> TicketsByUser(@PathVariable Long userId) {
         return tsi.ticketsByUser(userId);
     }
+
     @GetMapping(value = "/event/{eventId}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Отображение билетов мероприятия по его Id")
     public List<TicketDTO> TicketsByEvent(@PathVariable Long eventId) {
@@ -60,6 +62,7 @@ public class TicketController {
     public TicketDTO exchangeTickets(@RequestBody RequestDTO exchangeRequest) {
         return tsi.exchangeTickets(exchangeRequest);
     }
+
     @PostMapping(value = "/mail", produces = {"application/json", "application/xml"})
     @Operation(summary = "Отправка билета по почте")
     public TicketDTO mailTicket(@RequestBody TicketDTO ticket) {

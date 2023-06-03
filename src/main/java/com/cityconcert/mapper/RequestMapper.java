@@ -1,7 +1,7 @@
 package com.cityconcert.mapper;
 
-import com.cityconcert.domain.model.Request;
 import com.cityconcert.domain.dto.RequestDTO;
+import com.cityconcert.domain.model.Request;
 import org.mapstruct.Mapper;
 
 /**
@@ -12,5 +12,5 @@ public interface RequestMapper extends EntityMapper<RequestDTO, Request> {
     RequestDTO toDto(Request t);
 
     Request toEntity(RequestDTO t);
-        }
+}
 
