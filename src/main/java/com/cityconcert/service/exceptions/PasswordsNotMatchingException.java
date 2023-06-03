@@ -1,6 +1,6 @@
 package com.cityconcert.service.exceptions;
 
-public class PasswordsNotMatchingException extends RuntimeException  {
+public class PasswordsNotMatchingException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     public PasswordsNotMatchingException() {

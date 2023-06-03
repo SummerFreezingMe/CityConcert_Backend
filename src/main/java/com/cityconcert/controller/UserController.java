@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 
 @RestController
-@Tag(name="Пользователи",description = "Методы, взаимодействующие с пользователями")
+@Tag(name = "Пользователи", description = "Методы, взаимодействующие с пользователями")
 @RequestMapping("/users")
 public class UserController {
     private final UserServiceImpl usi;
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/current", produces = {"application/json", "application/xml"})
-    @Operation(summary ="Возвращаем текущего авторизованного пользователя")
+    @Operation(summary = "Возвращаем текущего авторизованного пользователя")
     public UserDTO currentUser() {
         return usi.getCurrentUser();
     }

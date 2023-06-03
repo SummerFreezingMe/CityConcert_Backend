@@ -47,7 +47,7 @@ public interface VenueService {
      * @param id the id of the entity.
      * @return the entity.
      */
-   VenueDTO findOne(Long id);
+    VenueDTO findOne(Long id);
 
     /**
      * Delete the "id" venue.

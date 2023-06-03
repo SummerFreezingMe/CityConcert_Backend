@@ -8,6 +8,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * A Event.
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor

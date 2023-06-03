@@ -16,9 +16,10 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query(value = "select * from event where id in " +
-            "(select event_id from ticket where price > ?1 and price < ?2)",nativeQuery = true)
+            "(select event_id from ticket where price > ?1 and price < ?2)", nativeQuery = true)
     List<Event> findEventByTicketPrice(Double priceLowest, Double priceHighest);
-    @Query(value = "select * from event  where start_time > ?1 and start_time < ?2",nativeQuery = true)
+
+    @Query(value = "select * from event  where start_time > ?1 and start_time < ?2", nativeQuery = true)
     List<Event> findEventByDate(LocalDateTime dateFirst, LocalDateTime dateLast);
 
     Event findEventById(Long id);

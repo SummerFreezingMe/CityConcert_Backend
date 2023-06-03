@@ -10,7 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
-@Tag(name="Запросы", description = "Методы, взаимодействующие с запросами на обмен билетов и поиск компании на мероприятие")
+@Tag(name = "Запросы", description = "Методы, взаимодействующие с запросами на обмен билетов и поиск компании на мероприятие")
 @RequestMapping(value = "request")
 public class RequestController {
     private final RequestServiceImpl requestService;

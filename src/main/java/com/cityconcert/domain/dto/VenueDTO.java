@@ -12,6 +12,7 @@ import java.util.Objects;
 /**
  * A DTO for the {@link Venue} entity.
  */
+
 @SuppressWarnings("common-java:DuplicatedBlocks")
 @Getter
 @Setter
@@ -56,11 +57,11 @@ public class VenueDTO implements Serializable {
     @Override
     public String toString() {
         return "VenueDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", location='" + getLocation() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", capacity=" + getCapacity() +
-            "}";
+                "id=" + getId() +
+                ", name='" + getName() + "'" +
+                ", location='" + getLocation() + "'" +
+                ", description='" + getDescription() + "'" +
+                ", capacity=" + getCapacity() +
+                "}";
     }
 }

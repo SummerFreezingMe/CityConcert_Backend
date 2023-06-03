@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@Tag(name="Мероприятия",description = "Методы, взаимодействующие с мероприятиями")
+@Tag(name = "Мероприятия", description = "Методы, взаимодействующие с мероприятиями")
 @RequestMapping(value = "event")
 public class EventController {
     private final EventServiceImpl esi;
@@ -40,11 +40,13 @@ public class EventController {
     public List<EventDTO> filterEventsByGenre(@RequestBody List<String> descriptor) {
         return esi.findByDescriptor(descriptor);
     }
+
     @PostMapping(value = "/filter_by_date", produces = {"application/json", "application/xml"})
     @Operation(summary = "Получаем мероприятия по диапазону дат")
-    public List<EventDTO> filterEventsByDate(@RequestBody Map<String,LocalDateTime>payload) {
+    public List<EventDTO> filterEventsByDate(@RequestBody Map<String, LocalDateTime> payload) {
         return esi.findByDate(payload.get("start_date"), payload.get("end_date"));
     }
+
     @GetMapping(value = "/filter_by_name/{name}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Получаем мероприятия по определённому имени")
     public List<EventDTO> filterEventsByName(@PathVariable String name) {
@@ -56,13 +58,14 @@ public class EventController {
     public List<EventDTO> filterEventsByPrice(@RequestBody Double priceLowest, @RequestBody Double priceHighest) {
         return esi.findByPrice(priceLowest, priceHighest);
     }
+
     @PostMapping(value = "/filter", produces = {"application/json", "application/xml"})
     @Operation(summary = "Получаем мероприятия по всем существующим фильтрам")
-    public List<EventDTO> filterEvents(@RequestBody Map<String,Object> filters) {
+    public List<EventDTO> filterEvents(@RequestBody Map<String, Object> filters) {
         return esi.findByFilters(filters);
     }
 
-    @PostMapping(value = "/recommendations", produces = {"application/json", "application/xml"})
+    @GetMapping(value = "/recommendations", produces = {"application/json", "application/xml"})
     @Operation(summary = "Получаем рекомендации для пользователя")
     public List<EventDTO> recommendations() {
         return esi.fetchRecommendations();

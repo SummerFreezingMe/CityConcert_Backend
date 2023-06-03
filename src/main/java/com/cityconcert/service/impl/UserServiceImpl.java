@@ -1,8 +1,8 @@
 package com.cityconcert.service.impl;
 
-import com.cityconcert.domain.model.User;
 import com.cityconcert.domain.dto.RegistrationDTO;
 import com.cityconcert.domain.dto.UserDTO;
+import com.cityconcert.domain.model.User;
 import com.cityconcert.mapper.UserMapper;
 import com.cityconcert.repository.UserRepository;
 import com.cityconcert.security.SecurityUtils;
@@ -51,10 +51,10 @@ public class UserServiceImpl implements UserService {
     /**
      * Update basic information (first name, last name, email, language) for the current user.
      *
-     * @param userDTO   data to update the current user.
+     * @param userDTO data to update the current user.
      */
     public UserDTO updateUser(UserDTO userDTO) {
-        AtomicReference<UserDTO> updated =new AtomicReference<>();
+        AtomicReference<UserDTO> updated = new AtomicReference<>();
         SecurityUtils
                 .getCurrentUserLogin()
                 .flatMap(userRepository::findByUsername)
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
     public Optional<UserDTO> findOne(Long id) {
         log.debug("Request to get User : {}", id);
         return Optional.ofNullable(userMapper.toDto(userRepository.findById(id).orElseThrow(() ->
-                new UsernameNotFoundException("User not found with id: "+ id))));
+                new UsernameNotFoundException("User not found with id: " + id))));
     }
 
     public UserDTO save(RegistrationDTO user) {
@@ -117,12 +117,12 @@ public class UserServiceImpl implements UserService {
         if (user.getEmail() != null) {
             newUser.setEmail(user.getEmail());
         }
-        for (User u:
-             existingUsers) {
-            if(Objects.equals(u.getEmail(), user.getEmail())){
+        for (User u :
+                existingUsers) {
+            if (Objects.equals(u.getEmail(), user.getEmail())) {
                 throw new EmailAlreadyUsedException();
             }
-                if(Objects.equals(u.getUsername(), user.getUsername())){
+            if (Objects.equals(u.getUsername(), user.getUsername())) {
                 throw new UsernameAlreadyUsedException();
             }
         }

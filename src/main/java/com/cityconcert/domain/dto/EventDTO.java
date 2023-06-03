@@ -67,13 +67,13 @@ public class EventDTO implements Serializable {
     @Override
     public String toString() {
         return "EventDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", startTime='" + getStartTime() + "'" +
-            ", ticketLimit=" + getTicketLimit() +
-            ", status='" + getStatus() + "'" +
-            ", venue=" + getVenue_id() +
-            "}";
+                "id=" + getId() +
+                ", name='" + getName() + "'" +
+                ", startTime='" + getStartTime() + "'" +
+                ", ticketLimit=" + getTicketLimit() +
+                ", status='" + getStatus() + "'" +
+                ", venue=" + getVenue_id() +
+                "}";
     }
 
 

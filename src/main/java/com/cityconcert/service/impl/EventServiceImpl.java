@@ -1,10 +1,10 @@
 package com.cityconcert.service.impl;
 
-import com.cityconcert.domain.model.Event;
-import com.cityconcert.domain.model.Ticket;
 import com.cityconcert.domain.dto.EventDTO;
 import com.cityconcert.domain.dto.UserDTO;
 import com.cityconcert.domain.enumeration.TicketStatus;
+import com.cityconcert.domain.model.Event;
+import com.cityconcert.domain.model.Ticket;
 import com.cityconcert.mapper.EventMapper;
 import com.cityconcert.repository.EventRepository;
 import com.cityconcert.repository.TicketRepository;
@@ -57,11 +57,15 @@ public class EventServiceImpl implements EventService {
     private void generateTickets(Event eventDTO) {
         List<String> ticketsAmount = new ArrayList<>(Arrays.asList(eventDTO.getTicketLimit().split(", ")));
         List<String> ticketsPrices = new ArrayList<>(Arrays.asList(eventDTO.getTicketLimit().split(", ")));
+        long idCounter = eventRepository.findAll().size() * 1000L;
         for (int j = 0; j < ticketsAmount.size(); j++) {
-        for (int i = 1; i < Integer.parseInt(ticketsAmount.get(j))+1; i++) {
-            ticketRepository.save(new Ticket(0L, Double.parseDouble(ticketsPrices.get(j)),  "" +((char) (65 + j)) +i, TicketStatus.AVAILABLE,
-                    null,null, eventDTO.getId()));
-        }}
+            for (int i = 1; i < Integer.parseInt(ticketsAmount.get(j)) + 1; i++) {
+                ticketRepository.save(new Ticket(idCounter, Double.parseDouble(ticketsPrices.get(j)),
+                        "" + ((char) (65 + j)) + i, TicketStatus.AVAILABLE,
+                        null, null, eventDTO.getId()));
+                idCounter++;
+            }
+        }
     }
 
     @Override
@@ -111,14 +115,14 @@ public class EventServiceImpl implements EventService {
     public List<EventDTO> findByDescriptor(List<String> descriptors) {
         List<Event> allEvents = eventRepository.findAll();
         List<Event> selectedEvents = new ArrayList<>();
-        for (String descriptor:
-             descriptors) {
+        for (String descriptor :
+                descriptors) {
             allEvents.removeIf(e -> !e.getGenreDescriptors().toLowerCase().contains(descriptor.toLowerCase()));
-                List<Event> eventsByDescriptor= allEvents.stream().filter(e ->
-                                e.getGenreDescriptors().toLowerCase().contains(descriptor.toLowerCase())
-                                && !selectedEvents.contains(e))
+            List<Event> eventsByDescriptor = allEvents.stream().filter(e ->
+                            e.getGenreDescriptors().toLowerCase().contains(descriptor.toLowerCase())
+                                    && !selectedEvents.contains(e))
                     .collect(Collectors.toList());
-                selectedEvents.addAll(eventsByDescriptor);
+            selectedEvents.addAll(eventsByDescriptor);
         }
         return allEvents.stream().map(eventMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new));
@@ -160,14 +164,14 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventDTO> fetchRecommendations() {
-        UserDTO currUser=userService.getCurrentUser();
-        if(currUser==null|| ticketRepository.findByUserId(currUser.getId()).size()==0){
+        UserDTO currUser = userService.getCurrentUser();
+        if (currUser == null || ticketRepository.findByUserId(currUser.getId()).size() == 0) {
             return eventRepository.findAll().stream().map(eventMapper::toDto)
                     .collect(Collectors.toList());
-        }else {
+        } else {
             List<String> genreDescriptors = new ArrayList<>();
             List<Ticket> userTickets = ticketRepository.findByUserId(currUser.getId());
-            for (Ticket ticket: userTickets) {
+            for (Ticket ticket : userTickets) {
                 Event e = eventRepository.findEventById(ticket.getEventId());
                 genreDescriptors.addAll(new ArrayList<>(Arrays.asList(e.getGenreDescriptors().split(" , "))));
             }

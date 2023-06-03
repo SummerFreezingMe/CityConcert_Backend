@@ -63,5 +63,5 @@ public interface TicketService {
 
     TicketDTO exchangeTickets(RequestDTO exchangeRequest);
 
-    TicketDTO mailTicket(TicketDTO  ticket);
+    TicketDTO mailTicket(TicketDTO ticket);
 }

@@ -62,13 +62,13 @@ public class TicketDTO implements Serializable {
     @Override
     public String toString() {
         return "TicketDTO{" +
-            "id=" + getId() +
-            ", price=" + getPrice() +
-            ", seat='" + getSeat() + "'" +
-            ", status='" + getStatus() + "'" +
-            ", purchaseDate='" + getPurchaseDate() + "'" +
-            ", userId=" + getUserId() +
-            ", eventId=" + getEventId() +
-            "}";
+                "id=" + getId() +
+                ", price=" + getPrice() +
+                ", seat='" + getSeat() + "'" +
+                ", status='" + getStatus() + "'" +
+                ", purchaseDate='" + getPurchaseDate() + "'" +
+                ", userId=" + getUserId() +
+                ", eventId=" + getEventId() +
+                "}";
     }
 }

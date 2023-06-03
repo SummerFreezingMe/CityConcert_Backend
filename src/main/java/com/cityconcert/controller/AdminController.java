@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Tag(name="Администратор",description = "Методы, доступные пользователю с правами адмнистратора")
+@Tag(name = "Администратор", description = "Методы, доступные пользователю с правами адмнистратора")
 @RequestMapping("/admin")
 public class AdminController {
     private final UserServiceImpl userService;
@@ -45,12 +45,14 @@ public class AdminController {
     public EventDTO updateEvent(@RequestBody EventDTO event) {
         return eventService.update(event);
     }
+
     @DeleteMapping(value = "/event/delete/{id}",
             produces = {"application/json", "application/xml"})
     @Operation(summary = "Удаление мероприятия")
     public void deleteEvent(@PathVariable Long id) {
         eventService.delete(id);
     }
+
     @PostMapping(value = "/venue/add", produces = {"application/json", "application/xml"})
     @Operation(summary = "Добавляем экземпляр площадки")
     public VenueDTO addVenue(@RequestBody VenueDTO venue) {
