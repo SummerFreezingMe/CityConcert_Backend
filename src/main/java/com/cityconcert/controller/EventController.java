@@ -65,7 +65,7 @@ public class EventController {
         return esi.findByFilters(filters);
     }
 
-    @PostMapping(value = "/recommendations", produces = {"application/json", "application/xml"})
+    @GetMapping(value = "/recommendations", produces = {"application/json", "application/xml"})
     @Operation(summary = "Получаем рекомендации для пользователя")
     public List<EventDTO> recommendations() {
         return esi.fetchRecommendations();
