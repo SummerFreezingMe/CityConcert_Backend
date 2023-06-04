@@ -31,7 +31,7 @@ public class UserDTO implements Serializable {
 
     private String role;
 
-    private byte[] image;
+    private String image;
 
     @Override
     public String toString() {

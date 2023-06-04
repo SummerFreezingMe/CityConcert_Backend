@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Arrays;
 
 /**
  * A user.
@@ -61,8 +60,8 @@ public class User
     @Column(name = "role")
     private String role;
 
-    @Column(name = "image", length = 256)
-    private byte[] imageUrl;
+    @Column(name = "image")
+    private String image;
 
     @Override
     public boolean equals(Object o) {
@@ -87,7 +86,7 @@ public class User
         return "User{" +
                 "login='" + username + '\'' +
                 ", email='" + email + '\'' +
-                ", imageUrl='" + Arrays.toString(imageUrl) + '\'' +
+                ", imageUrl='" + image + '\'' +
                 ", activated='" + activated + '\'' +
                 "}";
     }

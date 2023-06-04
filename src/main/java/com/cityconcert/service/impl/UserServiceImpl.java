@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
                     if (userDTO.getEmail() != null) {
                         user.setEmail(userDTO.getEmail());
                     }
-                    user.setImageUrl(userDTO.getImage());
+                    user.setImage(userDTO.getImage());
                     log.debug("Changed Information for User: {}", user);
 
                     updated.set(userMapper.toDto(user));
