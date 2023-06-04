@@ -54,7 +54,7 @@ public class Event implements Serializable {
     private EventStatus status;
 
     @Column(name = "venue_id")
-    private Long venueId;
+    private Long venue_id;
 
     @Column(name = "image")
     private String image;
@@ -77,6 +77,6 @@ public class Event implements Serializable {
 
     @Override
     public String toString() {
-        return "Event{" + "id=" + getId() + ", venueId=" + getVenueId() + ", name='" + getName() + "'" + ", startTime='" + getStartTime() + "'" + ", ticketLimit=" + getTicketLimit() + ", status='" + getStatus() + "'" + "}";
+        return "Event{" + "id=" + getId() + ", venueId=" + getVenue_id() + ", name='" + getName() + "'" + ", startTime='" + getStartTime() + "'" + ", ticketLimit=" + getTicketLimit() + ", status='" + getStatus() + "'" + "}";
     }
 }
