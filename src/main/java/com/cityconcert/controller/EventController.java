@@ -1,6 +1,7 @@
 package com.cityconcert.controller;
 
 import com.cityconcert.domain.dto.EventDTO;
+import com.cityconcert.domain.dto.FiltersDTO;
 import com.cityconcert.service.impl.EventServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -61,14 +62,14 @@ public class EventController {
 
     @PostMapping(value = "/filter", produces = {"application/json", "application/xml"})
     @Operation(summary = "Получаем мероприятия по всем существующим фильтрам")
-    public List<EventDTO> filterEvents(@RequestBody Map<String, Object> filters) {
+    public List<EventDTO> filterEvents(@RequestBody FiltersDTO filters) {
         return esi.findByFilters(filters);
     }
 
-    @GetMapping(value = "/recommendations", produces = {"application/json", "application/xml"})
+    @GetMapping(value = "/recommendations/{id}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Получаем рекомендации для пользователя")
-    public List<EventDTO> recommendations() {
-        return esi.fetchRecommendations();
+    public List<EventDTO> recommendations(Long id) {
+        return esi.fetchRecommendations(id);
     }
 
 }
