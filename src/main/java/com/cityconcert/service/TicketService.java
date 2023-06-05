@@ -65,4 +65,6 @@ public interface TicketService {
     TicketDTO exchangeTickets(RequestDTO exchangeRequest, Long currentUserId);
 
     TicketDTO mailTicket(TicketDTO ticket, String email);
+
+    TicketDTO buyTicket(TicketDTO ticket);
 }

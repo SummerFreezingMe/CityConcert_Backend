@@ -39,10 +39,10 @@ public class TicketController {
         tsi.delete(id);
     }
 
-    @PostMapping(value = "/buy/{id}", produces = {"application/json", "application/xml"})
+    @PutMapping(value = "/buy", produces = {"application/json", "application/xml"})
     @Operation(summary = "Процедура покупки билета")
-    public TicketDTO buyTicket(@PathVariable Long id,@RequestBody TicketDTO ticket) {
-        return tsi.buyTicket(id,ticket);
+    public TicketDTO buyTicket(@RequestBody TicketDTO ticket) {
+        return tsi.buyTicket(ticket);
     }
 
     @GetMapping(value = "/user/{id}", produces = {"application/json", "application/xml"})

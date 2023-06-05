@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -139,12 +140,12 @@ public class TicketServiceImpl implements TicketService {
                         "Ticket", finalMailMessage, false, false));
         return ticket;
     }
-
-    public TicketDTO buyTicket(Long id, TicketDTO ticket) {
+    @Override
+    public TicketDTO buyTicket(TicketDTO ticket) {
         Ticket boughtTicket = ticketRepository.findById(ticket.getId()).
                 orElseThrow(TicketNotFoundException::new);
         boughtTicket.setStatus(TicketStatus.SOLD);
-        boughtTicket.setId(id);
+        boughtTicket.setPurchaseDate(LocalDateTime.now());
         ticketRepository.save(boughtTicket);
         return ticketMapper.toDto(boughtTicket);
     }
