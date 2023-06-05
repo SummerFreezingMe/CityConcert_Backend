@@ -20,28 +20,22 @@ public class UserController {
     }
 
     @PutMapping(value = "/update/{id}", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Обновляем экземпляр пользователя")
+    @Operation(summary = "Обновление экземпляра пользователя")
     public UserDTO updateUser(@RequestBody UserDTO user) {
         return usi.updateUser(user);
     }
 
     @GetMapping(value = "/get/{id}", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Возвращаем экземпляр пользователя по его Id")
+    @Operation(summary = "Возвращение экземпляра пользователя по его Id")
     public UserDTO getUser(@PathVariable Long id) {
         return usi.findOne(id).orElseThrow(EntityNotFoundException::new);
     }
 
     @DeleteMapping(value = "/delete/{id}",
             produces = {"application/json", "application/xml"})
-    @Operation(summary = "Удаляем экземпляр пользователя по его Id")
+    @Operation(summary = "Удаление экземпляра пользователя по его Id")
     public void deleteUser(@PathVariable String id) {
         usi.deleteUser(id);
-    }
-
-    @GetMapping(value = "/current", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Возвращаем текущего авторизованного пользователя")
-    public UserDTO currentUser() {
-        return usi.getCurrentUser();
     }
 
 }

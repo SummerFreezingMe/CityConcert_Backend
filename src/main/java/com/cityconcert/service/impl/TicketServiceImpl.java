@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -111,9 +112,10 @@ public class TicketServiceImpl implements TicketService {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
+
+
     @Override
-    public TicketDTO exchangeTickets(RequestDTO exchangeRequest) {
-        Long currentUserId = userService.getCurrentUser().getId();
+    public TicketDTO exchangeTickets(RequestDTO exchangeRequest, Long currentUserId) {
         Ticket ticketFromRequestAuthor = ticketRepository.findBySeatAndUserId(
                 exchangeRequest.getCurrentSeat(), exchangeRequest.getUserId()
         ).orElseThrow(TicketNotFoundException::new);
@@ -128,7 +130,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketDTO mailTicket(TicketDTO ticket) {
+    public TicketDTO mailTicket(TicketDTO ticket, String email) {
         EventDTO event = eventService.findOne(ticket.getEventId()).orElseThrow(TicketNotFoundException::new);
         String mailMessage;
         mailMessage = "Here is your ticket: " + ticket.getSeat() + " на мероприятие " + event.getName();
@@ -138,15 +140,12 @@ public class TicketServiceImpl implements TicketService {
                         "Ticket", finalMailMessage, false, false));
         return ticket;
     }
-
-    public TicketDTO buyTicket(Long id) {
-        Ticket boughtTicket = ticketRepository.findById(id).orElseThrow(TicketNotFoundException::new);
+    @Override
+    public TicketDTO buyTicket(TicketDTO ticket) {
+        Ticket boughtTicket = ticketRepository.findById(ticket.getId()).
+                orElseThrow(TicketNotFoundException::new);
         boughtTicket.setStatus(TicketStatus.SOLD);
-        if (userService.getCurrentUser() != null) {
-            boughtTicket.setUserId(userService.getCurrentUser().getId());
-        } else {
-            boughtTicket.setUserId(0L);
-        }
+        boughtTicket.setPurchaseDate(LocalDateTime.now());
         ticketRepository.save(boughtTicket);
         return ticketMapper.toDto(boughtTicket);
     }

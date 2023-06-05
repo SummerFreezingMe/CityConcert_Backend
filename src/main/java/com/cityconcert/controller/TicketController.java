@@ -21,34 +21,34 @@ public class TicketController {
     }
 
     @PostMapping(value = "/add", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Добавляем экземпляр билета")
+    @Operation(summary = "Добавление экземпляр билета")
     public TicketDTO addTicket(@RequestBody TicketDTO ticket) {
         return tsi.save(ticket);
     }
 
     @GetMapping(value = "/get/{id}", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Получаем экземпляр билета по его Id")
+    @Operation(summary = "Получение экземпляра билета по его Id")
     public TicketDTO getTicket(@PathVariable Long id) {
         return tsi.findOne(id).orElseThrow(TicketNotFoundException::new);
     }
 
     @DeleteMapping(value = "/delete/{id}",
             produces = {"application/json", "application/xml"})
-    @Operation(summary = "Удаляем экземпляр билета по его Id")
+    @Operation(summary = "Удаление экземпляра билета по его Id")
     public void deleteTicket(@PathVariable Long id) {
         tsi.delete(id);
     }
 
-    @GetMapping(value = "/buy/{id}", produces = {"application/json", "application/xml"})
+    @PutMapping(value = "/buy", produces = {"application/json", "application/xml"})
     @Operation(summary = "Процедура покупки билета")
-    public TicketDTO buyTicket(@PathVariable Long id) {
-        return tsi.buyTicket(id);
+    public TicketDTO buyTicket(@RequestBody TicketDTO ticket) {
+        return tsi.buyTicket(ticket);
     }
 
-    @GetMapping(value = "/user/{userId}", produces = {"application/json", "application/xml"})
+    @GetMapping(value = "/user/{id}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Отображение билетов пользователя по его Id")
-    public List<TicketDTO> TicketsByUser(@PathVariable Long userId) {
-        return tsi.ticketsByUser(userId);
+    public List<TicketDTO> TicketsByUser(@PathVariable Long id) {
+        return tsi.ticketsByUser(id);
     }
 
     @GetMapping(value = "/event/{eventId}", produces = {"application/json", "application/xml"})
@@ -57,16 +57,16 @@ public class TicketController {
         return tsi.ticketsByEvent(eventId);
     }
 
-    @PostMapping(value = "/exchange", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/exchange/{id}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Обмен билетов между пользователями")
-    public TicketDTO exchangeTickets(@RequestBody RequestDTO exchangeRequest) {
-        return tsi.exchangeTickets(exchangeRequest);
+    public TicketDTO exchangeTickets(@RequestBody RequestDTO exchangeRequest,@PathVariable Long id) {
+        return tsi.exchangeTickets(exchangeRequest,id);
     }
 
-    @PostMapping(value = "/mail", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/mail/{email}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Отправка билета по почте")
-    public TicketDTO mailTicket(@RequestBody TicketDTO ticket) {
-        return tsi.mailTicket(ticket);
+    public TicketDTO mailTicket(@RequestBody TicketDTO ticket,@PathVariable String email) {
+        return tsi.mailTicket(ticket,email);
     }
 }
 

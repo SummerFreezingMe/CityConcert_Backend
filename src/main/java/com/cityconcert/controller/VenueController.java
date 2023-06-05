@@ -22,13 +22,13 @@ public class VenueController {
     }
 
     @GetMapping(value = "/get/{id}", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Возвращаем экземпляр площадки по его Id")
+    @Operation(summary = "Возвращение экземпляра площадки по его Id")
     public VenueDTO getVenue(@PathVariable Long id) {
         return venueService.findOne(id);
     }
 
     @GetMapping(value = "/get_all", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Возвращаем список всех площадок")
+    @Operation(summary = "Возвращение списка всех площадок")
     public List<VenueDTO> getVenues() {
         return venueService.findAll();
     }

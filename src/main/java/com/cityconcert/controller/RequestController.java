@@ -20,33 +20,33 @@ public class RequestController {
     }
 
     @GetMapping(value = "/get/{id}", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Получаем экземпляр запроса по его Id")
+    @Operation(summary = "Получение экземпляра запроса по его Id")
     public RequestDTO getRequest(@PathVariable Long id) {
         return requestService.findOne(id).orElseThrow(EntityNotFoundException::new);
     }
 
 
     @GetMapping(value = "/get_by_type/{type}", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Отображаем все запросы определённого типа")
+    @Operation(summary = "Отображение всех запросов определённого типа")
     public List<RequestDTO> displayAllRequestByType(@PathVariable String type) {
         return requestService.findAllByType(type);
     }
 
     @PutMapping(value = "/update", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Обновляем экземпляр запроса")
+    @Operation(summary = "Обновление экземпляра запроса")
     public RequestDTO updateRequest(@RequestBody RequestDTO request) {
         return requestService.update(request);
     }
 
     @PostMapping(value = "/add", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Создаём новый экземпляр запроса")
+    @Operation(summary = "Создание нового экземпляра запроса")
     public RequestDTO addRequest(@RequestBody RequestDTO request) {
         return requestService.save(request);
     }
 
     @DeleteMapping(value = "/delete/{id}",
             produces = {"application/json", "application/xml"})
-    @Operation(summary = "Удаляем экземпляр пользователя по его Id")
+    @Operation(summary = "Удаление экземпляра запроса по его Id")
     public void deleteRequest(@PathVariable Long id) {
         requestService.delete(id);
     }
