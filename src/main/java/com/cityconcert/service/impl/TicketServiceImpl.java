@@ -111,9 +111,10 @@ public class TicketServiceImpl implements TicketService {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
+
+
     @Override
-    public TicketDTO exchangeTickets(RequestDTO exchangeRequest) {
-        Long currentUserId = userService.getCurrentUser().getId();
+    public TicketDTO exchangeTickets(RequestDTO exchangeRequest, Long currentUserId) {
         Ticket ticketFromRequestAuthor = ticketRepository.findBySeatAndUserId(
                 exchangeRequest.getCurrentSeat(), exchangeRequest.getUserId()
         ).orElseThrow(TicketNotFoundException::new);
@@ -128,7 +129,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketDTO mailTicket(TicketDTO ticket) {
+    public TicketDTO mailTicket(TicketDTO ticket, String email) {
         EventDTO event = eventService.findOne(ticket.getEventId()).orElseThrow(TicketNotFoundException::new);
         String mailMessage;
         mailMessage = "Here is your ticket: " + ticket.getSeat() + " на мероприятие " + event.getName();
@@ -139,14 +140,11 @@ public class TicketServiceImpl implements TicketService {
         return ticket;
     }
 
-    public TicketDTO buyTicket(Long id) {
-        Ticket boughtTicket = ticketRepository.findById(id).orElseThrow(TicketNotFoundException::new);
+    public TicketDTO buyTicket(Long id, TicketDTO ticket) {
+        Ticket boughtTicket = ticketRepository.findById(ticket.getId()).
+                orElseThrow(TicketNotFoundException::new);
         boughtTicket.setStatus(TicketStatus.SOLD);
-        if (userService.getCurrentUser() != null) {
-            boughtTicket.setUserId(userService.getCurrentUser().getId());
-        } else {
-            boughtTicket.setUserId(0L);
-        }
+        boughtTicket.setId(id);
         ticketRepository.save(boughtTicket);
         return ticketMapper.toDto(boughtTicket);
     }

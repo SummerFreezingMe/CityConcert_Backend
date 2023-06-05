@@ -39,16 +39,16 @@ public class TicketController {
         tsi.delete(id);
     }
 
-    @GetMapping(value = "/buy/{id}", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/buy/{id}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Процедура покупки билета")
-    public TicketDTO buyTicket(@PathVariable Long id) {
-        return tsi.buyTicket(id);
+    public TicketDTO buyTicket(@PathVariable Long id,@RequestBody TicketDTO ticket) {
+        return tsi.buyTicket(id,ticket);
     }
 
-    @GetMapping(value = "/user/{userId}", produces = {"application/json", "application/xml"})
+    @GetMapping(value = "/user/{id}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Отображение билетов пользователя по его Id")
-    public List<TicketDTO> TicketsByUser(@PathVariable Long userId) {
-        return tsi.ticketsByUser(userId);
+    public List<TicketDTO> TicketsByUser(@PathVariable Long id) {
+        return tsi.ticketsByUser(id);
     }
 
     @GetMapping(value = "/event/{eventId}", produces = {"application/json", "application/xml"})
@@ -57,16 +57,16 @@ public class TicketController {
         return tsi.ticketsByEvent(eventId);
     }
 
-    @PostMapping(value = "/exchange", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/exchange/{id}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Обмен билетов между пользователями")
-    public TicketDTO exchangeTickets(@RequestBody RequestDTO exchangeRequest) {
-        return tsi.exchangeTickets(exchangeRequest);
+    public TicketDTO exchangeTickets(@RequestBody RequestDTO exchangeRequest,@PathVariable Long id) {
+        return tsi.exchangeTickets(exchangeRequest,id);
     }
 
-    @PostMapping(value = "/mail", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/mail/{email}", produces = {"application/json", "application/xml"})
     @Operation(summary = "Отправка билета по почте")
-    public TicketDTO mailTicket(@RequestBody TicketDTO ticket) {
-        return tsi.mailTicket(ticket);
+    public TicketDTO mailTicket(@RequestBody TicketDTO ticket,@PathVariable String email) {
+        return tsi.mailTicket(ticket,email);
     }
 }
 

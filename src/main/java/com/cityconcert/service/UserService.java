@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserService {
     UserDTO save(RegistrationDTO user);
 
-    UserDTO getCurrentUser();
 
 
 }
