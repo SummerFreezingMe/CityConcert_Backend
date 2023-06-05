@@ -1,8 +1,8 @@
 package com.cityconcert.service.impl;
 
-import com.cityconcert.domain.model.User;
 import com.cityconcert.domain.dto.RegistrationDTO;
 import com.cityconcert.domain.dto.UserDTO;
+import com.cityconcert.domain.model.User;
 import com.cityconcert.mapper.UserMapper;
 import com.cityconcert.repository.UserRepository;
 import com.cityconcert.security.SecurityUtils;
@@ -11,7 +11,6 @@ import com.cityconcert.service.exceptions.EmailAlreadyUsedException;
 import com.cityconcert.service.exceptions.UsernameAlreadyUsedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -51,10 +50,10 @@ public class UserServiceImpl implements UserService {
     /**
      * Update basic information (first name, last name, email, language) for the current user.
      *
-     * @param userDTO   data to update the current user.
+     * @param userDTO data to update the current user.
      */
     public UserDTO updateUser(UserDTO userDTO) {
-        AtomicReference<UserDTO> updated =new AtomicReference<>();
+        AtomicReference<UserDTO> updated = new AtomicReference<>();
         SecurityUtils
                 .getCurrentUserLogin()
                 .flatMap(userRepository::findByUsername)
@@ -63,7 +62,7 @@ public class UserServiceImpl implements UserService {
                     if (userDTO.getEmail() != null) {
                         user.setEmail(userDTO.getEmail());
                     }
-                    user.setImageUrl(userDTO.getImage());
+                    user.setImage(userDTO.getImage());
                     log.debug("Changed Information for User: {}", user);
 
                     updated.set(userMapper.toDto(user));
@@ -101,7 +100,7 @@ public class UserServiceImpl implements UserService {
     public Optional<UserDTO> findOne(Long id) {
         log.debug("Request to get User : {}", id);
         return Optional.ofNullable(userMapper.toDto(userRepository.findById(id).orElseThrow(() ->
-                new UsernameNotFoundException("User not found with id: "+ id))));
+                new UsernameNotFoundException("User not found with id: " + id))));
     }
 
     public UserDTO save(RegistrationDTO user) {
@@ -117,12 +116,12 @@ public class UserServiceImpl implements UserService {
         if (user.getEmail() != null) {
             newUser.setEmail(user.getEmail());
         }
-        for (User u:
-             existingUsers) {
-            if(Objects.equals(u.getEmail(), user.getEmail())){
+        for (User u :
+                existingUsers) {
+            if (Objects.equals(u.getEmail(), user.getEmail())) {
                 throw new EmailAlreadyUsedException();
             }
-                if(Objects.equals(u.getUsername(), user.getUsername())){
+            if (Objects.equals(u.getUsername(), user.getUsername())) {
                 throw new UsernameAlreadyUsedException();
             }
         }
@@ -130,15 +129,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(newUser);
     }
 
-    @Override
-    public UserDTO getCurrentUser() {
-        System.out.println(SecurityContextHolder.getContext().
-                getAuthentication().getName());
-        User currentUser = userRepository.findByUsername(
-                SecurityContextHolder.getContext().
-                        getAuthentication().getName()).orElse(new User());
-        return userMapper.toDto(currentUser);
-    }
 
 
 }

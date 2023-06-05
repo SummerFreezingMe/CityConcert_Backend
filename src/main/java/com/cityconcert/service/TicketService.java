@@ -61,7 +61,10 @@ public interface TicketService {
 
     List<TicketDTO> ticketsByEvent(Long eventId);
 
-    TicketDTO exchangeTickets(RequestDTO exchangeRequest);
 
-    TicketDTO mailTicket(TicketDTO  ticket);
+    TicketDTO exchangeTickets(RequestDTO exchangeRequest, Long currentUserId);
+
+    TicketDTO mailTicket(TicketDTO ticket, String email);
+
+    TicketDTO buyTicket(TicketDTO ticket);
 }

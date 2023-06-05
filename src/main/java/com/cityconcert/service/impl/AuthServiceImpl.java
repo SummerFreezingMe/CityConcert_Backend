@@ -37,12 +37,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Object login(String login, String password) {
         User user = userRepository.findByUsername(login).orElseThrow(() ->
-                new UsernameNotFoundException("User not found with username: "+ login));
-        if (passwordEncoder.matches(password,user.getPassword())) {
+                new UsernameNotFoundException("User not found with username: " + login));
+        if (passwordEncoder.matches(password, user.getPassword())) {
             Authentication authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),password));
+                    .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), password));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        }else throw new InvalidPasswordException();
+        } else throw new InvalidPasswordException();
         return userMapper.toDto(user);
     }
 
@@ -51,8 +51,8 @@ public class AuthServiceImpl implements AuthService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found with username or email: "+ username));
-        Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_"+user.getRole()));
+                        new UsernameNotFoundException("User not found with username or email: " + username));
+        Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(),
                 authorities);

@@ -1,20 +1,20 @@
 package com.cityconcert.service.impl;
 
+import com.cityconcert.domain.dto.VenueDTO;
 import com.cityconcert.domain.model.Venue;
+import com.cityconcert.mapper.VenueMapper;
 import com.cityconcert.repository.VenueRepository;
 import com.cityconcert.service.VenueService;
-import com.cityconcert.domain.dto.VenueDTO;
-import com.cityconcert.mapper.VenueMapper;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link Venue}.
@@ -55,14 +55,14 @@ public class VenueServiceImpl implements VenueService {
         log.debug("Request to partially update Venue : {}", venueDTO);
 
         return venueRepository
-            .findById(venueDTO.getId())
-            .map(existingVenue -> {
-                venueMapper.partialUpdate(existingVenue, venueDTO);
+                .findById(venueDTO.getId())
+                .map(existingVenue -> {
+                    venueMapper.partialUpdate(existingVenue, venueDTO);
 
-                return existingVenue;
-            })
-            .map(venueRepository::save)
-            .map(venueMapper::toDto);
+                    return existingVenue;
+                })
+                .map(venueRepository::save)
+                .map(venueMapper::toDto);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class VenueServiceImpl implements VenueService {
     @Transactional(readOnly = true)
     public VenueDTO findOne(Long id) {
         log.debug("Request to get Venue : {}", id);
-        Venue venue =venueRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Venue venue = venueRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return venueMapper.toDto(venue);
     }
 

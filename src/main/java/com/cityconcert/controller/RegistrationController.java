@@ -26,8 +26,7 @@ public class RegistrationController {
 
         if (user.getPassword().equals(user.getPasswordConfirm())) {
             return userService.save(user);
-        }
-        else throw new PasswordsNotMatchingException();
+        } else throw new PasswordsNotMatchingException();
     }
 
     @GetMapping("/login")

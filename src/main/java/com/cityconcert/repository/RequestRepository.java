@@ -1,7 +1,7 @@
 package com.cityconcert.repository;
 
-import com.cityconcert.domain.model.Request;
 import com.cityconcert.domain.enumeration.RequestType;
+import com.cityconcert.domain.model.Request;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

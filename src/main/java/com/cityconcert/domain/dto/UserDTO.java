@@ -10,6 +10,8 @@ import java.io.Serializable;
 /**
  * A DTO representing a user, with only the public attributes.
  */
+
+@SuppressWarnings("common-java:DuplicatedBlocks")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,7 +31,7 @@ public class UserDTO implements Serializable {
 
     private String role;
 
-    private byte[] image;
+    private String image;
 
     @Override
     public String toString() {

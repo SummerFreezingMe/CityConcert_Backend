@@ -1,11 +1,11 @@
 package com.cityconcert.service;
 
 import com.cityconcert.domain.dto.EventDTO;
+import com.cityconcert.domain.dto.FiltersDTO;
 import com.cityconcert.domain.model.Event;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -58,8 +58,9 @@ public interface EventService {
      */
     void delete(Long id);
 
-    List<EventDTO> findByDescriptor(List<String> descriptors);
 
+
+    List<EventDTO> findByDescriptor(List<String> descriptors);
 
     List<EventDTO> findByDate(LocalDateTime dateFirst, LocalDateTime dateLast);
 
@@ -67,7 +68,7 @@ public interface EventService {
 
     List<EventDTO> findByName(String name);
 
-    List<EventDTO> findByFilters(Map<String, Object> filters);
+    List<EventDTO> findByFilters(FiltersDTO filters);
 
-    List<EventDTO> fetchRecommendations();
+    List<EventDTO> fetchRecommendations(Long userId);
 }

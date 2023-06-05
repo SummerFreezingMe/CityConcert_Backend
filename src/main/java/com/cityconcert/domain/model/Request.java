@@ -8,6 +8,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * A Event.
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,6 +33,7 @@ public class Request {
     @Column(name = "event_id")
     Long eventId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "request_type")
     RequestType requestType;
 

@@ -12,9 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public interface UserService {
- UserDTO save(RegistrationDTO user);
-
-    UserDTO getCurrentUser();
+    UserDTO save(RegistrationDTO user);
 
 
 
