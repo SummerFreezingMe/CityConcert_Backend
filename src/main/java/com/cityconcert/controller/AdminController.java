@@ -35,13 +35,13 @@ public class AdminController {
     }
 
     @PostMapping(value = "/event/add", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Добавляем новое мероприятие")
+    @Operation(summary = "Добавление нового мероприятия")
     public EventDTO addEvent(@RequestBody EventDTO event) {
         return eventService.save(event);
     }
 
     @PutMapping(value = "/event/update", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Изменяем существующее мероприятие")
+    @Operation(summary = "Изменение существующего мероприятия")
     public EventDTO updateEvent(@RequestBody EventDTO event) {
         return eventService.update(event);
     }
@@ -54,7 +54,7 @@ public class AdminController {
     }
 
     @PostMapping(value = "/venue/add", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Добавляем экземпляр площадки")
+    @Operation(summary = "Добавление экземпляра площадки")
     public VenueDTO addVenue(@RequestBody VenueDTO venue) {
         return venueService.save(venue);
     }

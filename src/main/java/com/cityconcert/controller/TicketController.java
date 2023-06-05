@@ -21,20 +21,20 @@ public class TicketController {
     }
 
     @PostMapping(value = "/add", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Добавляем экземпляр билета")
+    @Operation(summary = "Добавление экземпляр билета")
     public TicketDTO addTicket(@RequestBody TicketDTO ticket) {
         return tsi.save(ticket);
     }
 
     @GetMapping(value = "/get/{id}", produces = {"application/json", "application/xml"})
-    @Operation(summary = "Получаем экземпляр билета по его Id")
+    @Operation(summary = "Получение экземпляра билета по его Id")
     public TicketDTO getTicket(@PathVariable Long id) {
         return tsi.findOne(id).orElseThrow(TicketNotFoundException::new);
     }
 
     @DeleteMapping(value = "/delete/{id}",
             produces = {"application/json", "application/xml"})
-    @Operation(summary = "Удаляем экземпляр билета по его Id")
+    @Operation(summary = "Удаление экземпляра билета по его Id")
     public void deleteTicket(@PathVariable Long id) {
         tsi.delete(id);
     }
